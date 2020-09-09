@@ -17,7 +17,7 @@ pip install pandas
 py loot_gen.py -h
 ```
 
-Argparse help have all needed arguments described.
+Argparse help (`-h`) have all needed arguments described.
 
 ## Licensing
 
