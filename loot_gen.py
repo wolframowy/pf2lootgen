@@ -1,6 +1,18 @@
 import pandas as pd
 import argparse
 from random import randrange
+from enum import Enum
+
+
+class Rarity(Enum):
+    COMMON = 1
+    UNCOMMON = 2
+    RARE = 3
+
+
+class ItemType(Enum):
+    PERMANENT = 1
+    CONSUMABLE = 2
 
 
 class LootGen:
@@ -17,42 +29,83 @@ class LootGen:
         self.cons_uncommon = self.cons[self.cons['Rarity'] == 'Uncommon']
         self.cons_rare = self.cons[self.cons['Rarity'] == 'Rare']
 
-    def generate_loot(self, pt_lvl: int, pt_size: int):
+    def generate_loot_for_player_level(self, pt_lvl: int, pt_size: int, rarity: int = Rarity.RARE):
         v = self.treasure_table[self.treasure_table['Level'] == pt_lvl]
-        perm = eval(v.iloc[0]['Permanent'])
-        cons = eval(v.iloc[0]['Consumables'])
+        perm_ct = eval(v.iloc[0]['Permanent'])
+        cons_ct = eval(v.iloc[0]['Consumables'])
         curr = v.iloc[0]['Currency']
         extra = max(0, pt_size - 4)
         curr += extra * v.iloc[0]['AddCurr']
-        perm[str(pt_lvl)] += extra
-        cons[str(pt_lvl)] += extra
-        cons[str(pt_lvl + 1)] += extra
+        perm_ct[str(pt_lvl)] += extra
+        cons_ct[str(pt_lvl)] += extra
+        cons_ct[str(pt_lvl + 1)] += extra
         r_perm = []
         r_cons = []
-        for key, val in perm.items():
-            subset = self.perm[self.perm['Lvl'] == int(key)]
+        perm_pool = self.perm_common if rarity == Rarity.COMMON else (pd.concat([self.perm_common, self.perm_uncommon])
+                                                                      if rarity == Rarity.UNCOMMON else self.perm)
+        cons_pool = self.cons_common if rarity == Rarity.COMMON else (pd.concat([self.cons_common, self.cons_uncommon])
+                                                                      if rarity == Rarity.UNCOMMON else self.cons)
+        for key, val in perm_ct.items():
+            subset = perm_pool[perm_pool['Lvl'] == int(key)]
             n = subset.shape[0]
             for i in range(val):
                 r_perm.append(subset.iloc[randrange(n)].values.tolist())
-        for key, val in cons.items():
-            subset = self.cons[self.cons['Lvl'] == int(key)]
+        for key, val in cons_ct.items():
+            subset = cons_pool[cons_pool['Lvl'] == int(key)]
             n = subset.shape[0]
             for i in range(val):
                 r_cons.append(subset.iloc[randrange(n)].values.tolist())
         return r_perm, r_cons, curr
 
+    def generate_items_of_level(self, ilvl: int, n: int, rarity=Rarity.COMMON, item_type=ItemType.PERMANENT):
+        ret = []
+        if item_type == ItemType.PERMANENT:
+            pool = self.perm_rare if rarity == Rarity.RARE else (self.perm_uncommon if rarity == Rarity.UNCOMMON
+                                                                 else self.perm_common)
+        else:
+            pool = self.cons_rare if rarity == Rarity.RARE else (self.cons_uncommon if rarity == Rarity.UNCOMMON
+                                                                 else self.cons_common)
+        pool = pool[pool['Lvl'] == ilvl]
+        ct = pool.shape[0]
+        for i in range(n):
+            ret.append(pool.iloc[randrange(ct)].values.tolist())
+        return ret
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate loot for specific level and party size')
-    parser.add_argument('pt_lvl', metavar='pt_lvl', type=int, help='Average level of party')
-    parser.add_argument('pt_size', metavar='pt_size', type=int, help='Size of a party')
+    subparsers = parser.add_subparsers(help='sub-command help', dest='subparser_name')
+
+    parser_party = subparsers.add_parser('party', help='party help')
+    parser_party.add_argument('pt_lvl', metavar='pt_lvl', type=int, help='Integer - Average level of party')
+    parser_party.add_argument('pt_size', metavar='pt_size', type=int, help='Integer - Size of a party')
+    parser_party.add_argument('--rarity', metavar='rarity', type=int,
+                              help='Integer - Rarity up to which items will be generated,' +
+                                   ' 1 - Common, 2 - Uncommon, 3 (default) - Rare')
+
+    parser_items = subparsers.add_parser('items', help='items help')
+    parser_items.add_argument('ilvl', metavar='ilvl', type=int, help='Integer - Level of items to be generated')
+    parser_items.add_argument('N', metavar='n', type=int, help='Integer - Number of items to be generated')
+    parser_items.add_argument('--rarity', metavar='rarity', type=int,
+                              help='Integer - Rarity of items, 1 - Common, 2 - Uncommon, 3 - Rare')
+    parser_items.add_argument('--type', metavar='type', type=int,
+                              help='Integer - Type of items, 1 - Permanent, 2 - Consumable')
     args = parser.parse_args()
     loot_gen = LootGen()
-    p, c, cu = loot_gen.generate_loot(args.pt_lvl, args.pt_size)
-    print(f'Permanent items:')
-    for r in p:
-        print(r)
-    print(f'Consumables:')
-    for r in c:
-        print(r)
-    print(f'{cu} gp')
+    if args.subparser_name == 'party':
+        p, c, cu = loot_gen.generate_loot_for_player_level(args.pt_lvl, args.pt_size,
+                                                           args.rarity if args.rarity else Rarity.RARE)
+        print('Permanent items:')
+        for r in p:
+            print(r)
+        print('Consumables:')
+        for r in c:
+            print(r)
+        print(f'{cu} gp')
+    elif args.subparser_name == 'items':
+        p = loot_gen.generate_items_of_level(args.ilvl, args.N, args.rarity if args.rarity else Rarity.COMMON,
+                                             args.type if args.type else ItemType.PERMANENT)
+        for r in p:
+            print(r)
+    else:
+        print('Command not supported!')
