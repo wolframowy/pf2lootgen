@@ -29,7 +29,9 @@ class LootGen:
         self.cons_uncommon = self.cons[self.cons['Rarity'] == 'Uncommon']
         self.cons_rare = self.cons[self.cons['Rarity'] == 'Rare']
 
-    def generate_loot_for_player_level(self, pt_lvl: int, pt_size: int, rarity: int = Rarity.RARE):
+    def generate_loot_for_player_level(self, pt_lvl: int, pt_size: int, rarity: int = None):
+        if not rarity:
+            rarity = Rarity.RARE
         v = self.treasure_table[self.treasure_table['Level'] == pt_lvl]
         perm_ct = eval(v.iloc[0]['Permanent'])
         cons_ct = eval(v.iloc[0]['Consumables'])
@@ -53,11 +55,17 @@ class LootGen:
         for key, val in cons_ct.items():
             subset = cons_pool[cons_pool['Lvl'] == int(key)]
             n = subset.shape[0]
+            if not n:
+                continue
             for i in range(val):
                 r_cons.append(subset.iloc[randrange(n)].values.tolist())
         return r_perm, r_cons, curr
 
-    def generate_items_of_level(self, ilvl: int, n: int, rarity=Rarity.COMMON, item_type=ItemType.PERMANENT):
+    def generate_items_of_level(self, ilvl: int, n: int, rarity=None, item_type=None):
+        if not rarity:
+            rarity = Rarity.COMMON
+        if not item_type:
+            item_type = ItemType.PERMANENT
         ret = []
         if item_type == ItemType.PERMANENT:
             pool = self.perm_rare if rarity == Rarity.RARE else (self.perm_uncommon if rarity == Rarity.UNCOMMON
@@ -67,6 +75,8 @@ class LootGen:
                                                                  else self.cons_common)
         pool = pool[pool['Lvl'] == ilvl]
         ct = pool.shape[0]
+        if not ct:
+            return ret
         for i in range(n):
             ret.append(pool.iloc[randrange(ct)].values.tolist())
         return ret
