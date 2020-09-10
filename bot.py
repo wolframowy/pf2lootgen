@@ -126,6 +126,9 @@ async def items(ctx, *, message: str):
         msg += f'\n> None item matched given criteria'
     else:
         for item in r:
+            if len(msg) > 1500:
+                await ctx.channel.send(msg)
+                msg = ''
             msg += f'\n> Name: *{item[1]}*, Level: *{item[2]}*,' \
                    f' Rarity: *{item[3]}*, Price: *{item[4]} GP*, Link: <{item[6]}>'
     await ctx.channel.send(msg)
@@ -134,7 +137,8 @@ async def items(ctx, *, message: str):
 @party.error
 @items.error
 async def default_error(ctx, error):
-    await ctx.channel.send(f'{type(error).__name__} Something went wrong. Type "-pf2gen h" for list of options')
+    await ctx.channel.send(f'{type(error).__name__} Something went wrong. '
+                           f'Type "{prefix} + {OPTIONS["help"]}" for list of options')
 
 
 loot_gen = LootGen()

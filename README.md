@@ -10,6 +10,10 @@ This tool uses trademarks and/or copyrights owned by Paizo Inc., used under Paiz
 
 ## Installing / Getting started
 
+Just to add my bot to your server use following link:
+[https://discord.com/api/oauth2/authorize?client_id=753345973991899197&permissions=67584&scope=bot](https://discord.com/api/oauth2/authorize?client_id=753345973991899197&permissions=67584&scope=bot)
+
+If you want to set up this bot on your own then follow the next steps:
 To use this script you need `python-3.x`. Then you need to install requirements and create a `token.json`.
 Also you will need a csv file containing all items which can be generated using this tool [pf2eq_scape](https://github.com/wolframowy/pf2eq_scrape)
 or at least have following data structure:
