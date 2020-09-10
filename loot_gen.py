@@ -62,6 +62,8 @@ class LootGen:
         return r_perm, r_cons, curr
 
     def generate_items_of_level(self, ilvl: int, n: int, rarity=None, item_type=None):
+        if n > 50:
+            n = 50
         if not rarity:
             rarity = Rarity.COMMON
         if not item_type:
