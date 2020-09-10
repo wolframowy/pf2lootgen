@@ -10,14 +10,49 @@ This tool uses trademarks and/or copyrights owned by Paizo Inc., used under Paiz
 
 ## Installing / Getting started
 
-To use this script you need `python-3.x`. Then you need to install pandas and you are good to go.
+To use this script you need `python-3.x`. Then you need to install requirements and create a `token.json`.
+Also you will need a csv file containing all items which can be generated using this tool [pf2eq_scape](https://github.com/wolframowy/pf2eq_scrape)
+or at least have following data structure:
 
+|              ID           |   Title   |    Level   |   Rarity    |      Price       |   Traits    |      Link       |
+|:-------------------------:|:---------:|:----------:|:-----------:|:----------------:|:-----------:|:---------------:|
+| ID on pathfinder prd page | Item name | Item level | Item rarity | Item price in GP | Item traits | Link to pf2 prd |
+
+
+To run the bot use following commands. Remember that you also need to invite the bot into your discord server.
 ```shell
-pip install pandas
-py loot_gen.py -h
+pip install req.txt
+py bot.py
 ```
 
-Argparse help (`-h`) have all needed arguments described.
+### Initial Configuration
+
+To run this bot you require your discord bot token placed in `token.json` file in the same folder as `bot.py` is.
+It should look like that:
+
+```json
+{
+    "token": "-----YOUR_TOKEN_GOES_HERE-----"
+}
+```
+
+### Usage
+
+This bot have following commands:
+```
+-p2lg -h - display bot help
+
+-p2lg -p party_level party_size [-r rarity] - generate whole level worth of loot for party of given level and size
+    party_level - INTEGER: average level of party
+    party_size - INTEGER: number of PCs in party
+    rarity - OPTIONAL CHARACTER: Rarity up to which the items will be generated, "c" - Common, "u" - Uncommon, "r" - Rare (Default)
+
+-p2lg -i item_level number_of_items [-r rarity] [-t type] - generate given number of items of given level
+    item_level - INTEGER: level of items to be generated
+    number_of_items - INTEGER: number of items to be generated
+    rarity - OPTIONAL CHARACTER: rarity of generated items, "c" - Common (Default), "u" - Uncommon, "r" - Rare'
+    type - OPTIONAL CHARACTER: type of items to be generated, "p" - Permanent (Default), "c" - Consumable
+```
 
 ## Licensing
 
