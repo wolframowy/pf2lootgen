@@ -5,7 +5,7 @@ from loot_gen import LootGen, Rarity, ItemType
 
 
 # configuration
-DEBUG = True
+DEBUG = False
 
 # instantiate the app
 app = Flask(__name__)
