@@ -1,25 +1,26 @@
 import pandas as pd
+import numpy as np
 import argparse
 from random import randrange
 from enum import Enum
 
 
-class Rarity(Enum):
-    COMMON = 1
-    UNCOMMON = 2
-    RARE = 3
+class Rarity:
+    COMMON = 'COMMON'
+    UNCOMMON = 'UNCOMMON'
+    RARE = 'RARE'
 
 
-class ItemType(Enum):
-    PERMANENT = 1
-    CONSUMABLE = 2
+class ItemType():
+    PERMANENT = 'PERMANENT'
+    CONSUMABLE = 'CONSUMABLE'
 
 
 class LootGen:
 
     def __init__(self):
         self.treasure_table = pd.read_csv('treasure_by_level.csv', sep=';')
-        items = pd.read_csv('items.csv', sep=';')
+        items = pd.read_csv('items.csv', sep=';').astype({'ID': 'int32', 'Lvl': 'int32', 'Price': 'float32'})
         self.cons = items[items['Traits'].str.contains('Consumable')]
         self.perm = items[~items['Traits'].str.contains('Consumable')]
         self.perm_common = self.perm[self.perm['Rarity'] == 'Common']
@@ -29,15 +30,25 @@ class LootGen:
         self.cons_uncommon = self.cons[self.cons['Rarity'] == 'Uncommon']
         self.cons_rare = self.cons[self.cons['Rarity'] == 'Rare']
 
-    def generate_loot_for_player_level(self, pt_lvl: int, pt_size: int, rarity: int = None):
+    @staticmethod
+    def __row_to_primitive__(series):
+        arr = []
+        for v in series.values.tolist():
+            if type(v) == np.int32 or type(v) == np.int64:
+                arr.append(int(v))
+            if type(v) == str:
+                arr.append(v)
+        return arr
+
+    def generate_loot_for_player_level(self, pt_lvl: int, pt_size: int, rarity: str = None):
         if not rarity:
             rarity = Rarity.RARE
         v = self.treasure_table[self.treasure_table['Level'] == pt_lvl]
         perm_ct = eval(v.iloc[0]['Permanent'])
         cons_ct = eval(v.iloc[0]['Consumables'])
-        curr = v.iloc[0]['Currency']
+        curr = int(v.iloc[0]['Currency'])
         extra = max(0, pt_size - 4)
-        curr += extra * v.iloc[0]['AddCurr']
+        curr += extra * int(v.iloc[0]['AddCurr'])
         perm_ct[str(pt_lvl)] += extra
         cons_ct[str(pt_lvl)] += extra
         cons_ct[str(pt_lvl + 1)] += extra
@@ -51,14 +62,15 @@ class LootGen:
             subset = perm_pool[perm_pool['Lvl'] == int(key)]
             n = subset.shape[0]
             for i in range(val):
-                r_perm.append(subset.iloc[randrange(n)].values.tolist())
+                test = subset.iloc[randrange(n)].values
+                r_perm.append(self.__row_to_primitive__(subset.iloc[randrange(n)]))
         for key, val in cons_ct.items():
             subset = cons_pool[cons_pool['Lvl'] == int(key)]
             n = subset.shape[0]
             if not n:
                 continue
             for i in range(val):
-                r_cons.append(subset.iloc[randrange(n)].values.tolist())
+                r_cons.append(self.__row_to_primitive__(subset.iloc[randrange(n)]))
         return r_perm, r_cons, curr
 
     def generate_items_of_level(self, ilvl: int, n: int, rarity=None, item_type=None):
@@ -80,7 +92,7 @@ class LootGen:
         if not ct:
             return ret
         for i in range(n):
-            ret.append(pool.iloc[randrange(ct)].values.tolist())
+            ret.append(self.__row_to_primitive__(pool.iloc[randrange(ct)]))
         return ret
 
 

@@ -2,3 +2,6 @@
 .idea
 token.json
 __pycache__
+
+# Python virtual environment
+venv
