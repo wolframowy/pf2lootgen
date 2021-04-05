@@ -1,5 +1,6 @@
-*.csv
+items.csv
 .idea
+.vscode
 token.json
 __pycache__
 
