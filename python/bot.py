@@ -167,5 +167,5 @@ while loop_value:
         if iteration > 100:
             break
         time.sleep(5)
-with open('token.json') as fh:
+with open('./../token.json') as fh:
     bot.run(json.load(fh)['token'])

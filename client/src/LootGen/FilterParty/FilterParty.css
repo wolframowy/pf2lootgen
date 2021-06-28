@@ -1,0 +1,10 @@
+
+.FilterParty_rarity_select {
+    min-width: 100px;
+    margin: 0 2px 0 2px;
+}
+
+.FilterParty_text_field.MuiFormControl-root {
+    margin: 0 2px 0 2px;
+    max-width: 6rem;
+}

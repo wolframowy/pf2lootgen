@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 import argparse
 from random import randrange
-from enum import Enum
 
 
 class Rarity:
@@ -11,7 +10,7 @@ class Rarity:
     RARE = 'RARE'
 
 
-class ItemType():
+class ItemType:
     PERMANENT = 'PERMANENT'
     CONSUMABLE = 'CONSUMABLE'
 
@@ -19,8 +18,8 @@ class ItemType():
 class LootGen:
 
     def __init__(self):
-        self.treasure_table = pd.read_csv('treasure_by_level.csv', sep=';')
-        items = pd.read_csv('items.csv', sep=';').astype({'ID': 'int32', 'Lvl': 'int32', 'Price': 'float32'})
+        self.treasure_table = pd.read_csv('./../db/treasure_by_level.csv', sep=';')
+        items = pd.read_csv('./../db/items.csv', sep=';').astype({'ID': 'int32', 'Lvl': 'int32', 'Price': 'float32'})
         self.cons = items[items['Traits'].str.contains('Consumable')]
         self.perm = items[~items['Traits'].str.contains('Consumable')]
         self.perm_common = self.perm[self.perm['Rarity'] == 'Common']
@@ -31,14 +30,25 @@ class LootGen:
         self.cons_rare = self.cons[self.cons['Rarity'] == 'Rare']
 
     @staticmethod
-    def __row_to_primitive__(series):
-        arr = []
-        for v in series.values.tolist():
-            if type(v) == np.int32 or type(v) == np.int64:
-                arr.append(int(v))
-            if type(v) == str:
-                arr.append(v)
-        return arr
+    def __row_to_entry__(series):
+        ret = {}
+        row = series.to_dict()
+        for val in row:
+            if type(row[val]) == np.int32 or type(row[val]) == np.int64:
+                ret[val] = int(row[val])
+            elif type(row[val]) == np.float32 or type(row[val]) == np.float64:
+                ret[val] = float(row[val])
+            else:
+                ret[val] = row[val]
+        return ret
+
+        # arr = []
+        # for v in series.values.tolist():
+        #     if type(v) == np.int32 or type(v) == np.int64:
+        #         arr.append(int(v))
+        #     else:
+        #         arr.append(v)
+        # return Entry(arr)
 
     def generate_loot_for_player_level(self, pt_lvl: int, pt_size: int, rarity: str = None):
         if not rarity:
@@ -63,14 +73,14 @@ class LootGen:
             n = subset.shape[0]
             for i in range(val):
                 test = subset.iloc[randrange(n)].values
-                r_perm.append(self.__row_to_primitive__(subset.iloc[randrange(n)]))
+                r_perm.append(self.__row_to_entry__(subset.iloc[randrange(n)]))
         for key, val in cons_ct.items():
             subset = cons_pool[cons_pool['Lvl'] == int(key)]
             n = subset.shape[0]
             if not n:
                 continue
             for i in range(val):
-                r_cons.append(self.__row_to_primitive__(subset.iloc[randrange(n)]))
+                r_cons.append(self.__row_to_entry__(subset.iloc[randrange(n)]))
         return r_perm, r_cons, curr
 
     def generate_items_of_level(self, ilvl: int, n: int, rarity=None, item_type=None):
@@ -92,7 +102,7 @@ class LootGen:
         if not ct:
             return ret
         for i in range(n):
-            ret.append(self.__row_to_primitive__(pool.iloc[randrange(ct)]))
+            ret.append(self.__row_to_entry__(pool.iloc[randrange(ct)]))
         return ret
 
 

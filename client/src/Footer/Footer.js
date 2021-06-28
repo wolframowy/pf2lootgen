@@ -3,7 +3,7 @@ import { Paper, Typography } from "@material-ui/core"
 
 function Footer() {
     return (
-        <Paper className="test">
+        <Paper className="footer_background">
             <Typography>
                 FOOTER
             </Typography>
