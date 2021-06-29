@@ -10,6 +10,9 @@ class LootGen extends Component {
         super(props);
         this.state = {
             mode_party: true,
+            loading: false,
+            items: [],
+            party: {}
         };
     }
 
