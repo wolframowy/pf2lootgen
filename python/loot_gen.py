@@ -19,7 +19,7 @@ class LootGen:
 
     def __init__(self):
         self.treasure_table = pd.read_csv('./../db/treasure_by_level.csv', sep=';')
-        items = pd.read_csv('./../db/items.csv', sep=';').astype({'ID': 'int32', 'Lvl': 'int32', 'Price': 'float32'})
+        items = pd.read_csv('./../db/items.csv', sep=';', encoding='ISO-8859-1').astype({'ID': 'int32', 'Lvl': 'int32', 'Price': 'float32'})
         self.cons = items[items['Traits'].str.contains('Consumable')]
         self.perm = items[~items['Traits'].str.contains('Consumable')]
         self.perm_common = self.perm[self.perm['Rarity'] == 'Common']

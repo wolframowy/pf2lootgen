@@ -94,16 +94,16 @@ async def party(ctx, *, message: str):
         msg += f'\n> None item matched given criteria'
     else:
         for perm in r_perm:
-            msg += f'\n> Name: *{perm[1]}*, Level: *{perm[2]}*,' \
-                   f' Rarity: *{perm[3]}*, Price: *{perm[4]} GP*, Link: <{perm[6]}>'
+            msg += f'\n> Name: *{perm["Title"]}*, Level: *{perm["Lvl"]}*,' \
+                   f' Rarity: *{perm["Rarity"]}*, Price: *{perm["Price"]} GP*, Link: <{perm["URL"]}>'
     await ctx.channel.send(msg)
     msg = '**Generated consumables:**'
     if not r_cons:
         msg += f'\n> None item matched given criteria'
     else:
         for cons in r_cons:
-            msg += f'\n> Name: *{cons[1]}*, Level: *{cons[2]}*,' \
-                   f' Rarity: *{cons[3]}*, Price: *{cons[4]} GP*, Link: <{cons[6]}>'
+            msg += f'\n> Name: *{cons["Title"]}*, Level: *{cons["Lvl"]}*,' \
+                   f' Rarity: *{cons["Rarity"]}*, Price: *{cons["Price"]} GP*, Link: <{cons["URL"]}>'
     await ctx.channel.send(msg)
     msg = f'**Total currency in coins or valuables: {curr} GP**'
     await ctx.channel.send(msg)
@@ -129,8 +129,8 @@ async def items(ctx, *, message: str):
             if len(msg) > 1500:
                 await ctx.channel.send(msg)
                 msg = ''
-            msg += f'\n> Name: *{item[1]}*, Level: *{item[2]}*,' \
-                   f' Rarity: *{item[3]}*, Price: *{item[4]} GP*, Link: <{item[6]}>'
+            msg += f'\n> Name: *{item["Title"]}*, Level: *{item["Lvl"]}*,' \
+                   f' Rarity: *{item["Rarity"]}*, Price: *{item["Price"]} GP*, Link: <{item["URL"]}>'
     await ctx.channel.send(msg)
 
 
