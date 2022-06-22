@@ -1,7 +1,9 @@
+import os
 import pandas as pd
 import numpy as np
 import argparse
 from random import randrange
+from collections import Counter
 
 
 class Rarity:
@@ -18,8 +20,10 @@ class ItemType:
 class LootGen:
 
     def __init__(self):
-        self.treasure_table = pd.read_csv('./../db/treasure_by_level.csv', sep=';')
-        items = pd.read_csv('./../db/items.csv', sep=';', encoding='ISO-8859-1').astype({'ID': 'int32', 'Lvl': 'int32', 'Price': 'float32'})
+        file_dir = os.path.dirname(__file__)
+        self.treasure_table = pd.read_csv(os.path.join(file_dir, './../db/treasure_by_level.csv'), sep=';')
+        items = pd.read_csv(os.path.join(file_dir, './../db/items.csv'), sep=';', encoding='ISO-8859-1') \
+            .astype({'ID': 'int32', 'Lvl': 'int32', 'Price': 'float32'})
         self.cons = items[items['Traits'].str.contains('Consumable')]
         self.perm = items[~items['Traits'].str.contains('Consumable')]
         self.perm_common = self.perm[self.perm['Rarity'] == 'Common']
@@ -62,8 +66,8 @@ class LootGen:
         perm_ct[str(pt_lvl)] += extra
         cons_ct[str(pt_lvl)] += extra
         cons_ct[str(pt_lvl + 1)] += extra
-        r_perm = []
-        r_cons = []
+        r_perm = {}
+        r_cons = {}
         perm_pool = self.perm_common if rarity == Rarity.COMMON else (pd.concat([self.perm_common, self.perm_uncommon])
                                                                       if rarity == Rarity.UNCOMMON else self.perm)
         cons_pool = self.cons_common if rarity == Rarity.COMMON else (pd.concat([self.cons_common, self.cons_uncommon])
@@ -72,16 +76,23 @@ class LootGen:
             subset = perm_pool[perm_pool['Lvl'] == int(key)]
             n = subset.shape[0]
             for i in range(val):
-                test = subset.iloc[randrange(n)].values
-                r_perm.append(self.__row_to_entry__(subset.iloc[randrange(n)]))
+                entry = self.__row_to_entry__(subset.iloc[randrange(n)])
+                if(entry['ID'] in r_perm.keys()):
+                    r_perm[entry['ID']]['count'] += 1
+                else:
+                    r_perm[entry['ID']] = { **entry, 'count': 1 }
         for key, val in cons_ct.items():
             subset = cons_pool[cons_pool['Lvl'] == int(key)]
             n = subset.shape[0]
             if not n:
                 continue
             for i in range(val):
-                r_cons.append(self.__row_to_entry__(subset.iloc[randrange(n)]))
-        return r_perm, r_cons, curr
+                entry =  self.__row_to_entry__(subset.iloc[randrange(n)])
+                if(entry['ID'] in r_perm.keys()):
+                    r_cons[entry['ID']]['count'] += 1
+                else:
+                    r_cons[entry['ID']] = { **entry, 'count': 1 }
+        return list(r_perm.values()), list(r_cons.values()), curr
 
     def generate_items_of_level(self, ilvl: int, n: int, rarity=None, item_type=None):
         if n > 50:
@@ -90,7 +101,7 @@ class LootGen:
             rarity = Rarity.COMMON
         if not item_type:
             item_type = ItemType.PERMANENT
-        ret = []
+        ret = {}
         if item_type == ItemType.PERMANENT:
             pool = self.perm_rare if rarity == Rarity.RARE else (self.perm_uncommon if rarity == Rarity.UNCOMMON
                                                                  else self.perm_common)
@@ -102,8 +113,12 @@ class LootGen:
         if not ct:
             return ret
         for i in range(n):
-            ret.append(self.__row_to_entry__(pool.iloc[randrange(ct)]))
-        return ret
+            entry = self.__row_to_entry__(pool.iloc[randrange(ct)])
+            if(entry['ID'] in ret.keys()):
+                ret[entry['ID']]['count'] += 1
+            else:
+                ret[entry['ID']] = { **entry, 'count': 1 }
+        return list(ret.values())
 
 
 if __name__ == '__main__':

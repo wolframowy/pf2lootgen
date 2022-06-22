@@ -1,6 +1,4 @@
 from flask import Flask, jsonify, request
-from flask_cors import CORS
-
 from loot_gen import LootGen, Rarity, ItemType
 
 
@@ -12,7 +10,7 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 
 # enable CORS
-CORS(app, resources={r'/*': {'origins': '*'}})
+# CORS(app, resources={r'/*': {'origins': '*'}})
 
 # create LootGen
 loot_gen = LootGen()
@@ -37,30 +35,15 @@ def ping_pong():
 
 @app.route('/party/<int:pt_lvl>/<int:pt_size>', methods=['GET'])
 def party(pt_lvl: int, pt_size: int):
-    r_perm, r_cons, curr = loot_gen.generate_loot_for_player_level(pt_lvl=pt_lvl, pt_size=pt_size)
+    rarity_param = request.args.get('r')
+    rarity = RARITY_MAP[rarity_param] if rarity_param in RARITY_MAP else None
+    r_perm, r_cons, curr = loot_gen.generate_loot_for_player_level(pt_lvl=pt_lvl, pt_size=pt_size, rarity=rarity)
     ret = {
         'perm': r_perm,
         'consumable': r_cons,
         'currency': curr
     }
     return jsonify(ret)
-
-
-@app.route('/party/<int:pt_lvl>/<int:pt_size>/<string:rarity>', methods=['GET'])
-def party_rarity(pt_lvl: int, pt_size: int, rarity: str):
-    if rarity in RARITY_MAP:
-        r_perm, r_cons, curr = loot_gen.generate_loot_for_player_level(pt_lvl=pt_lvl, pt_size=pt_size,
-                                                                       rarity=RARITY_MAP[rarity])
-    else:
-        r_perm, r_cons, curr = loot_gen.generate_loot_for_player_level(pt_lvl=pt_lvl, pt_size=pt_size,
-                                                                       rarity=RARITY_MAP['r'])
-    ret = {
-        'perm': r_perm,
-        'consumable': r_cons,
-        'currency': curr
-    }
-    return jsonify(ret)
-
 
 @app.route('/item/<int:ilvl>/<int:item_no>')
 def item(ilvl: int, item_no: int):

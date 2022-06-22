@@ -15,7 +15,7 @@ Just to add my bot to your server use following link:
 
 If you want to set up this bot on your own then follow the next steps:
 To use this script you need `python-3.x`. Then you need to install requirements and create a `token.json`.
-Also you will need a csv file containing all items which can be generated using this tool [pf2eq_scape](https://github.com/wolframowy/pf2eq_scrape)
+Also you will need a `items.csv` file in [db](./db/) folder containing all items which can be generated using this tool [pf2eq_scape](https://github.com/wolframowy/pf2eq_scrape)
 or at least have following data structure:
 
 |              ID           |   Title   |    Level   |   Rarity    |      Price       |   Traits    |      Link       |

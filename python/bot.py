@@ -1,3 +1,4 @@
+import os
 import json
 import time
 import urllib
@@ -94,7 +95,7 @@ async def party(ctx, *, message: str):
         msg += f'\n> None item matched given criteria'
     else:
         for perm in r_perm:
-            msg += f'\n> Name: *{perm["Title"]}*, Level: *{perm["Lvl"]}*,' \
+            msg += f'\n> {perm["count"]}x Name: *{perm["Title"]}*, Level: *{perm["Lvl"]}*,' \
                    f' Rarity: *{perm["Rarity"]}*, Price: *{perm["Price"]} GP*, Link: <{perm["URL"]}>'
     await ctx.channel.send(msg)
     msg = '**Generated consumables:**'
@@ -102,7 +103,7 @@ async def party(ctx, *, message: str):
         msg += f'\n> None item matched given criteria'
     else:
         for cons in r_cons:
-            msg += f'\n> Name: *{cons["Title"]}*, Level: *{cons["Lvl"]}*,' \
+            msg += f'\n> {cons["count"]}x Name: *{cons["Title"]}*, Level: *{cons["Lvl"]}*,' \
                    f' Rarity: *{cons["Rarity"]}*, Price: *{cons["Price"]} GP*, Link: <{cons["URL"]}>'
     await ctx.channel.send(msg)
     msg = f'**Total currency in coins or valuables: {curr} GP**'
@@ -129,7 +130,7 @@ async def items(ctx, *, message: str):
             if len(msg) > 1500:
                 await ctx.channel.send(msg)
                 msg = ''
-            msg += f'\n> Name: *{item["Title"]}*, Level: *{item["Lvl"]}*,' \
+            msg += f'\n> {item["count"]}x Name: *{item["Title"]}*, Level: *{item["Lvl"]}*,' \
                    f' Rarity: *{item["Rarity"]}*, Price: *{item["Price"]} GP*, Link: <{item["URL"]}>'
     await ctx.channel.send(msg)
 
@@ -167,5 +168,6 @@ while loop_value:
         if iteration > 100:
             break
         time.sleep(5)
-with open('./../token.json') as fh:
+file_dir = os.path.dirname(__file__)
+with open(os.path.join(file_dir, './../token.json')) as fh:
     bot.run(json.load(fh)['token'])
