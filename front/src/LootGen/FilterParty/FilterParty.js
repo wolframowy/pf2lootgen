@@ -1,6 +1,6 @@
 import './FilterParty.css';
 import {Component} from 'react';
-import { Box, TextField, Select, MenuItem, FormControl, InputLabel } from '@material-ui/core'
+import { Box, TextField, Select, MenuItem, FormControl, InputLabel } from '@mui/material'
 
 class FilterParty extends Component{
 

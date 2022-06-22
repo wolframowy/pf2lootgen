@@ -1,5 +1,5 @@
-import './Footer.css'
-import { Paper, Typography } from "@material-ui/core"
+import './Footer.css';
+import { Paper, Typography } from "@mui/material";
 
 function Footer() {
     return (

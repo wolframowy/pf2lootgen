@@ -2,7 +2,7 @@ import './LootGen.css';
 import FilterParty from './FilterParty/FilterParty'
 import FilterItem from './FilterItem/FilterItem'
 import {Component} from "react";
-import {Box, Button, ButtonGroup} from '@material-ui/core';
+import {Box, Button, ButtonGroup} from '@mui/material';
 
 class LootGen extends Component {
 
