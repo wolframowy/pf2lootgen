@@ -2,7 +2,7 @@ import './LootGen.scss';
 import FilterParty from './FilterParty/FilterParty';
 import FilterItem from './FilterItem/FilterItem';
 import React, {useState} from 'react';
-import {Box, Button, ButtonGroup} from '@mui/material';
+import {Box, Button, ButtonGroup, Paper} from '@mui/material';
 import config from './../config/config.json';
 
 /**
@@ -33,8 +33,6 @@ function LootGen() {
   const normalizeCount = (count) => {
     return count > 50 ? 50 : (count < 1 ? 1 : count);
   };
-
-  const isModeParty = () => modeParty === 'p';
 
   const getPartyLoot = () => {
     setLoading(true);
@@ -80,7 +78,7 @@ function LootGen() {
   const handleModeClick = (mode) => setModeParty(mode === 'p');
 
   const handleSearch = () => {
-      isModeParty() ? getPartyLoot() : getItemLoot();
+    modeParty ? getPartyLoot() : getItemLoot();
   };
 
   const partyProps = {
@@ -95,7 +93,6 @@ function LootGen() {
     rarity, handleRarityChange,
     type, handleTypeChange};
 
-  console.log(items);
   return (
     <Box className='LootGen'>
       <Box className='filter'>
@@ -120,8 +117,14 @@ function LootGen() {
         <Button variant="contained" onClick={handleSearch}>Search</Button>
       </Box>
       <Box className='results'>
-        {items.length &&
-        items.map((item) => <div key={item['ID']}>{JSON.stringify(item)}</div>)}
+        <Paper >
+          {items.length > 0 &&
+            items.map(
+                (item) =>
+                  <div key={item['ID']}>
+                    {JSON.stringify(item)}
+                  </div>)}
+        </Paper>
       </Box>
     </Box>
   );
