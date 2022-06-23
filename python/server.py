@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS, cross_origin
 from loot_gen import LootGen, Rarity, ItemType
 
 
@@ -10,7 +11,7 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 
 # enable CORS
-# CORS(app, resources={r'/*': {'origins': '*'}})
+CORS(app, resources={r'/api/*': {'origins': '*'}})
 
 # create LootGen
 loot_gen = LootGen()
@@ -33,7 +34,8 @@ def ping_pong():
     return jsonify('pong!')
 
 
-@app.route('/party/<int:pt_lvl>/<int:pt_size>', methods=['GET'])
+@app.route('/api/party/<int:pt_lvl>/<int:pt_size>', methods=['GET'])
+@cross_origin()
 def party(pt_lvl: int, pt_size: int):
     rarity_param = request.args.get('r')
     rarity = RARITY_MAP[rarity_param] if rarity_param in RARITY_MAP else None
@@ -45,7 +47,7 @@ def party(pt_lvl: int, pt_size: int):
     }
     return jsonify(ret)
 
-@app.route('/item/<int:ilvl>/<int:item_no>')
+@app.route('/api/item/<int:ilvl>/<int:item_no>')
 def item(ilvl: int, item_no: int):
     rarity_param = request.args.get("r")
     item_type_param = request.args.get("t")

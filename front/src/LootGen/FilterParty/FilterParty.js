@@ -1,53 +1,67 @@
-import './FilterParty.css';
-import {Component} from 'react';
-import { Box, TextField, Select, MenuItem, FormControl, InputLabel } from '@mui/material'
+import './../LootGen.scss';
+import React from 'react';
+import PropTypes from 'prop-types';
+import {TextField, Select, MenuItem,
+  FormControl, InputLabel} from '@mui/material';
 
-class FilterParty extends Component{
+/**
+ * FilterParty component containing filters for party loot generation
+ * @param {*} props
+ * @return {object} FilterParty component
+ */
+function FilterParty(props) {
+  const {
+    lvl,
+    handleLvlChange,
+    size,
+    handleSizeChange,
+    rarity,
+    handleRarityChange,
+  } = props;
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            lvl: 1,
-            size: 4,
-            rarity: ''
-        }
-    }
+  return (
+    <>
+      <TextField
+        color="secondary"
+        variant="filled"
+        className='text_field'
+        id='pt_lvl'
+        required label='Party level'
+        type='number'
+        value={lvl}
+        onChange={handleLvlChange}
+        inputProps={{style: {textAlign: 'end'}}}/>
+      <TextField
+        color="secondary"
+        variant="filled"
+        className='text_field'
+        id='pt_size'
+        required label='Party size'
+        type='number'
+        value={size}
+        onChange={handleSizeChange}
+        inputProps={{style: {textAlign: 'end'}}}/>
+      <FormControl variant="filled">
+        <InputLabel id='rarity_label'>Max rarity</InputLabel>
+        <Select color="secondary" className='select' id="rarity"
+          labelId='rarity_label' label="Max rarity"
+          value={rarity} onChange={handleRarityChange}>
+          <MenuItem value='c'>Common</MenuItem>
+          <MenuItem value='u'>Uncommon</MenuItem>
+          <MenuItem value='r'>Rare</MenuItem>
+        </Select>
+      </FormControl>
+    </>
+  );
+};
 
-    handleRarityChange(event) {
-        this.setState({
-            rarity: event.target.value
-        });
-    }
-
-    handleLvlChange(e) {
-        this.setState({
-            lvl: e.target.value
-        })
-    }
-
-    handleSizeChange(e) {
-        this.setState({
-            size: e.target.value
-        })
-    }
-
-    render() {
-        return(
-            <Box>
-                <TextField className='FilterParty_text_field' id='pt_lvl' required label='Party level' type='number' value={this.state.lvl} onChange={(e) => this.handleLvlChange(e)}/>
-                <TextField className='FilterParty_text_field' id='pt_size' required label='Party size' type='number' value={this.state.size} onChange={(e) => this.handleSizeChange(e)}/>
-                <FormControl>
-                    <InputLabel id='rarity_label'>Rarity</InputLabel>
-                    <Select className='FilterParty_rarity_select' id="rarity" labelId='rarity_label' autoWidth value={this.state.rarity} onChange={(e) => this.handleRarityChange(e)}>
-                        <MenuItem value='c'>Common</MenuItem>
-                        <MenuItem value='u'>Uncommon</MenuItem>
-                        <MenuItem value='r'>Rare</MenuItem>
-                    </Select>
-                </FormControl>
-            </Box>
-        );
-    }
-
+FilterParty.propTypes = {
+  lvl: PropTypes.number,
+  size: PropTypes.number,
+  rarity: PropTypes.string,
+  handleSizeChange: PropTypes.func,
+  handleLvlChange: PropTypes.func,
+  handleRarityChange: PropTypes.func,
 };
 
 export default FilterParty;
