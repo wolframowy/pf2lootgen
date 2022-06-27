@@ -22,14 +22,17 @@ function FilterParty(props) {
   return (
     <>
       <TextField
-        color="secondary"
-        variant="filled"
+        color='secondary'
+        variant='filled'
         className='text_field'
         id='pt_lvl'
         required label='Party level'
         type='number'
         value={lvl}
         onChange={handleLvlChange}
+        onFocus={(event) => {
+          event.target.select();
+        }}
         inputProps={{style: {textAlign: 'end'}}}/>
       <TextField
         color="secondary"
@@ -40,6 +43,9 @@ function FilterParty(props) {
         type='number'
         value={size}
         onChange={handleSizeChange}
+        onFocus={(event) => {
+          event.target.select();
+        }}
         inputProps={{style: {textAlign: 'end'}}}/>
       <FormControl variant="filled">
         <InputLabel id='rarity_label'>Max rarity</InputLabel>

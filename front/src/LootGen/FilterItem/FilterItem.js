@@ -32,6 +32,9 @@ function FilterItem(props) {
         type='number'
         value={lvl}
         onChange={handleLvlChange}
+        onFocus={(event) => {
+          event.target.select();
+        }}
         inputProps={{style: {textAlign: 'end'}}}/>
       <TextField
         color="secondary"
@@ -42,6 +45,9 @@ function FilterItem(props) {
         type='number'
         value={count}
         onChange={handleCountChange}
+        onFocus={(event) => {
+          event.target.select();
+        }}
         inputProps={{style: {textAlign: 'end'}}}/>
       <FormControl variant="filled">
         <InputLabel id='rarity_label'>Rarity</InputLabel>

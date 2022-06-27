@@ -8,7 +8,7 @@ import {Box, Link, Paper, Typography} from '@mui/material';
  */
 function Footer() {
   return (
-    <Box px={1} pb={2}>
+    <Box px={1} pb={2} className='Footer'>
       <Paper>
         <Box p={1}>
           <Typography fontSize={11} paragraph variant='caption' align='justify'>

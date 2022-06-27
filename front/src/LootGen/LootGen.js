@@ -4,6 +4,8 @@ import FilterItem from './FilterItem/FilterItem';
 import React, {useState} from 'react';
 import {Box, Button, ButtonGroup, Paper} from '@mui/material';
 import config from './../config/config.json';
+import ItemResult from './ItemResult/ItemResult';
+import PartyResult from './PartyResult/PartyResult';
 
 /**
  * LootGen container
@@ -13,7 +15,11 @@ function LootGen() {
   const [modeParty, setModeParty] = useState(true);
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState([]);
-  const [party, setParty] = useState({});
+  const [party, setParty] = useState({
+    consumable: [],
+    perm: [],
+    currency: 0,
+  });
 
   const [plvl, setPlvl] = useState(1);
   const [ilvl, setIlvl] = useState(1);
@@ -57,7 +63,6 @@ function LootGen() {
         .then((res) => res.json())
         .then(
             (res) => {
-              console.log(res);
               setItems(res);
               setLoading(false);
             },
@@ -118,12 +123,12 @@ function LootGen() {
       </Box>
       <Box className='results'>
         <Paper >
-          {items.length > 0 &&
-            items.map(
-                (item) =>
-                  <div key={item['ID']}>
-                    {JSON.stringify(item)}
-                  </div>)}
+          {modeParty ?
+            <PartyResult
+              consumable={party.consumable}
+              perm={party.perm}
+              currency={party.currency} /> :
+            <ItemResult items={items} />}
         </Paper>
       </Box>
     </Box>
