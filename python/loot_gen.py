@@ -2,9 +2,8 @@ import os
 import pandas as pd
 import numpy as np
 import argparse
+import json
 from random import randrange
-from collections import Counter
-
 
 class Rarity:
     COMMON = 'COMMON'
@@ -22,10 +21,10 @@ class LootGen:
     def __init__(self):
         file_dir = os.path.dirname(__file__)
         self.treasure_table = pd.read_csv(os.path.join(file_dir, './../db/treasure_by_level.csv'), sep=';')
-        items = pd.read_csv(os.path.join(file_dir, './../db/items.csv'), sep=';', encoding='ISO-8859-1') \
-            .astype({'ID': 'int32', 'Lvl': 'int32', 'Price': 'float32'})
-        self.cons = items[items['Traits'].str.contains('Consumable')]
-        self.perm = items[~items['Traits'].str.contains('Consumable')]
+        items = pd.read_csv(os.path.join(file_dir, './../db/items.csv'), sep=';', encoding='utf_8', quotechar="'", converters={'Traits': json.loads}) \
+            .astype({'ID': 'int32', 'Lvl': 'int32', 'Price': 'float32', 'Traits': 'object'})
+        self.cons = items[items['Traits'].apply(lambda x: 'Consumable' in x)]
+        self.perm = items[~items['Traits'].apply(lambda x: 'Consumable' in x)]
         self.perm_common = self.perm[self.perm['Rarity'] == 'Common']
         self.perm_uncommon = self.perm[self.perm['Rarity'] == 'Uncommon']
         self.perm_rare = self.perm[self.perm['Rarity'] == 'Rare']
@@ -53,6 +52,7 @@ class LootGen:
         #     else:
         #         arr.append(v)
         # return Entry(arr)
+
 
     def generate_loot_for_player_level(self, pt_lvl: int, pt_size: int, rarity: str = None):
         if not rarity:
