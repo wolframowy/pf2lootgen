@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {itemArr} from '../commonPropTypes';
-import {Paper} from '@mui/material';
+import {Paper, Link, Typography} from '@mui/material';
 
 /**
  * @param {*} props
@@ -13,23 +13,38 @@ function PartyResult(props) {
   return (
     <>
       <Paper>
+        <Typography>Permanent Items:</Typography>
         {perm.length > 0 &&
             perm.map(
                 (item) =>
                   <div key={item['ID']}>
-                    {JSON.stringify(item)}
+                    <span>{item.count}x </span>
+                    <Link href={item.URL} target='_blank'>{item.Title}</Link>
+                    <span> {item.Lvl} </span>
+                    <span>{item.Price} </span>
+                    <span>{item.Rarity} </span>
+                    <span>{item.Traits.length > 0 &&
+                      (`[${item.Traits.map((v) => `${v}`)}]`)}</span>
                   </div>)}
       </Paper>
       <Paper>
+        <Typography>Consumable Items:</Typography>
         {consumable.length > 0 &&
             consumable.map(
                 (item) =>
                   <div key={item['ID']}>
-                    {JSON.stringify(item)}
+                    <span>{item.count}x </span>
+                    <Link href={item.URL} target='_blank'>{item.Title}</Link>
+                    <span> {item.Lvl} </span>
+                    <span>{item.Price} </span>
+                    <span>{item.Rarity} </span>
+                    <span>{item.Traits.length > 0 &&
+                      (`[${item.Traits.map((v) => `${v}`)}]`)}</span>
                   </div>)}
       </Paper>
       <Paper>
-        {currency}
+        <Typography>Total Currency:</Typography>
+        {currency} Gold Pieces
       </Paper>
     </>
   );

@@ -19,13 +19,11 @@ function ItemResult(props) {
                   <div key={item.ID}>
                     <span>{item.count}x </span>
                     <Link href={item.URL} target='_blank'>{item.Title}</Link>
-                    <span>{item.Lvl} </span>
+                    <span> {item.Lvl} </span>
                     <span>{item.Price} </span>
                     <span>{item.Rarity} </span>
-                    {/* <span>{JSON.parse(item.Traits)}</span> */}
-                    {/* {<span>{JSON.parse(item.Traits).map((trait) => */}
-                    {/* <>{trait}, </>)}</span>} */}
-                    {JSON.stringify(item)}
+                    <span>{item.Traits.length > 0 &&
+                      (`[${item.Traits.map((v) => `${v}`)}]`)}</span>
                   </div>)}
     </>
   );
