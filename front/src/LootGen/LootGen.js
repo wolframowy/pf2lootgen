@@ -2,7 +2,7 @@ import './LootGen.scss';
 import FilterParty from './FilterParty/FilterParty';
 import FilterItem from './FilterItem/FilterItem';
 import React, {useState} from 'react';
-import {Box, Button, ButtonGroup, Paper} from '@mui/material';
+import {Box, Button, ButtonGroup} from '@mui/material';
 import config from './../config/config.json';
 import ItemResult from './ItemResult/ItemResult';
 import PartyResult from './PartyResult/PartyResult';
@@ -121,15 +121,13 @@ function LootGen() {
         </Box>
         <Button variant="contained" onClick={handleSearch}>Search</Button>
       </Box>
-      <Box className='results'>
-        <Paper >
-          {modeParty ?
-            <PartyResult
-              consumable={party.consumable}
-              perm={party.perm}
-              currency={party.currency} /> :
-            <ItemResult items={items} />}
-        </Paper>
+      <Box className='results' py={2} mx={4}>
+        {modeParty ?
+          <PartyResult
+            consumable={party.consumable}
+            perm={party.perm}
+            currency={party.currency} /> :
+          <ItemResult items={items} />}
       </Box>
     </Box>
   );
