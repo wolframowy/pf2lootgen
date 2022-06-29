@@ -65,7 +65,7 @@ class LootGen:
         curr += extra * int(v.iloc[0]['AddCurr'])
         perm_ct[str(pt_lvl)] += extra
         cons_ct[str(pt_lvl)] += extra
-        cons_ct[str(pt_lvl + 1)] += extra
+        cons_ct[str(min(20, pt_lvl + 1))] += extra
         r_perm = {}
         r_cons = {}
         perm_pool = self.perm_common if rarity == Rarity.COMMON else (pd.concat([self.perm_common, self.perm_uncommon])

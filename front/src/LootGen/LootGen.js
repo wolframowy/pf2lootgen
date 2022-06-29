@@ -29,15 +29,15 @@ function LootGen() {
   const [type, setType] = useState('p');
 
   const normalizeLevel = (lvl) => {
-    return lvl > 20 ? 20 : (lvl < 1 ? 1 : lvl);
+    return lvl > 20 ? 20 : (lvl < 1 ? 1 : parseInt(lvl));
   };
 
   const normalizeSize = (size) => {
-    return size > 10 ? 10 : (size < 1 ? 1 : size);
+    return size > 10 ? 10 : (size < 1 ? 1 : parseInt(size));
   };
 
   const normalizeCount = (count) => {
-    return count > 50 ? 50 : (count < 1 ? 1 : count);
+    return count > 50 ? 50 : (count < 1 ? 1 : parseInt(count));
   };
 
   const getPartyLoot = () => {

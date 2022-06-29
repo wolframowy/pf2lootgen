@@ -8,8 +8,6 @@ import {Link} from '@mui/material';
  */
 function ItemResult(props) {
   const {items} = props;
-  console.log(items);
-  console.log(items.length > 0 ? typeof(items[0].Traits) : null);
 
   return (
     <>
