@@ -2,10 +2,31 @@ import './LootGen.scss';
 import FilterParty from './FilterParty/FilterParty';
 import FilterItem from './FilterItem/FilterItem';
 import React, {useState} from 'react';
-import {Box, Button, ButtonGroup} from '@mui/material';
+import {styled, Box, Button, ButtonGroup} from '@mui/material';
 import config from './../config/config.json';
 import ItemResult from './ItemResult/ItemResult';
 import PartyResult from './PartyResult/PartyResult';
+
+
+const BoxWithScrollbar = styled(Box)(({theme}) => ({
+  '&::-webkit-scrollbar': {
+    width: '10px',
+  },
+  /* Track */
+  '&::-webkit-scrollbar-track': {
+    background: theme.palette.secondary.main,
+    borderRadius: '2px',
+  },
+  /* Handle */
+  '&::-webkit-scrollbar-thumb': {
+    background: theme.palette.primary.light,
+    borderRadius: '2px',
+  },
+  /* Handle on hover */
+  '&::-webkit-scrollbar-thumb:hover': {
+    background: theme.palette.primary.main,
+  },
+}));
 
 /**
  * LootGen container
@@ -121,14 +142,14 @@ function LootGen() {
         </Box>
         <Button variant="contained" onClick={handleSearch}>Search</Button>
       </Box>
-      <Box className='results' py={2} mx={4}>
+      <BoxWithScrollbar className='results' my={1} mx={4} py={1}>
         {modeParty ?
           <PartyResult
             consumable={party.consumable}
             perm={party.perm}
             currency={party.currency} /> :
           <ItemResult items={items} />}
-      </Box>
+      </BoxWithScrollbar>
     </Box>
   );
 }

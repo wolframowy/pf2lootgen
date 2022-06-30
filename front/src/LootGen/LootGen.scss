@@ -1,9 +1,9 @@
 .LootGen {
     flex-grow: 1;
-    display: inline-flex;
+    min-height: 0;
+    display: flex;
     flex-direction: column;
     align-items: stretch;
-    height: 10%;
 
     .filter {
         margin: 5px 10px 5px 10px;

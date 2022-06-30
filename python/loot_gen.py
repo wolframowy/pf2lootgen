@@ -22,7 +22,7 @@ class LootGen:
         file_dir = os.path.dirname(__file__)
         self.treasure_table = pd.read_csv(os.path.join(file_dir, './../db/treasure_by_level.csv'), sep=';')
         items = pd.read_csv(os.path.join(file_dir, './../db/items.csv'), sep=';', encoding='utf_8', quotechar="'", converters={'Traits': json.loads}) \
-            .astype({'ID': 'int32', 'Lvl': 'int32', 'Price': 'float32', 'Traits': 'object'})
+            .astype({'ID': 'int32', 'Lvl': 'int32', 'Price': 'float64', 'Traits': 'object'})
         self.cons = items[items['Traits'].apply(lambda x: 'Consumable' in x)]
         self.perm = items[~items['Traits'].apply(lambda x: 'Consumable' in x)]
         self.perm_common = self.perm[self.perm['Rarity'] == 'Common']

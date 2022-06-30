@@ -1,6 +1,17 @@
 import React from 'react';
 import {itemArr} from '../commonPropTypes';
-import {Link, Paper, Grid, Typography} from '@mui/material';
+import {styled, Link, Paper, Grid, Typography} from '@mui/material';
+
+const GridTitle = styled(Grid)(({theme}) => ({
+  position: 'sticky',
+  top: '-8px',
+  backgroundColor: theme.palette.primary.main,
+  color: theme.palette.text.secondary,
+}));
+
+const TypographyTitleCell = styled(Typography)(({theme}) => ({
+  color: theme.palette.primary.contrastText,
+}));
 
 /**
  * @param {*} props
@@ -18,24 +29,27 @@ function ItemResult(props) {
         justifyContent="center"
         alignItems="center"
         align="center">
-        <Grid item xs={1}>
-          <Typography>Count</Typography>
-        </Grid>
-        <Grid item xs={3}>
-          <Typography>Name</Typography>
-        </Grid>
-        <Grid item xs={1}>
-          <Typography>Level</Typography>
-        </Grid>
-        <Grid item xs={1}>
-          <Typography>Price</Typography>
-        </Grid>
-        <Grid item xs={2}>
-          <Typography>Rarity</Typography>
-        </Grid>
-        <Grid item xs={4}>
-          <Typography>Traits</Typography>
-        </Grid>
+        <GridTitle container
+          item xs={12}>
+          <Grid item xs={1}>
+            <TypographyTitleCell>Count</TypographyTitleCell>
+          </Grid>
+          <Grid item xs={3}>
+            <TypographyTitleCell>Name</TypographyTitleCell>
+          </Grid>
+          <Grid item xs={1}>
+            <TypographyTitleCell>Level</TypographyTitleCell>
+          </Grid>
+          <Grid item xs={1}>
+            <TypographyTitleCell>Price</TypographyTitleCell>
+          </Grid>
+          <Grid item xs={2}>
+            <TypographyTitleCell>Rarity</TypographyTitleCell>
+          </Grid>
+          <Grid item xs={4}>
+            <TypographyTitleCell>Traits</TypographyTitleCell>
+          </Grid>
+        </GridTitle>
 
         {items.length > 0 &&
           items.map(
