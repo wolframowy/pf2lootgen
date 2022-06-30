@@ -1,7 +1,7 @@
 import React from 'react';
 import {itemArr} from '../commonPropTypes';
 import {Link, Paper, Grid, Typography} from '@mui/material';
-import GridTitleMain from './Components/GridTitle';
+import GridTitleMain, {GridRow} from './Components/CustomGrid';
 import TypographyTitleCell from './Components/TypographyTitleCell';
 
 /**
@@ -45,7 +45,7 @@ function ItemResult(props) {
         {items.length > 0 &&
           items.map(
               (item) => (
-                <React.Fragment key={item.ID}>
+                <GridRow item container key={item.ID}>
                   <Grid item xs={1}>{item.count}x</Grid>
                   <Grid item xs={3} zeroMinWidth>
                     <Typography>
@@ -60,7 +60,7 @@ function ItemResult(props) {
                   <Grid item xs={4}>
                     {item.Traits.length > 0 &&
                     item.Traits.map((v) => `${v}, `)}</Grid>
-                </React.Fragment>))}
+                </GridRow>))}
       </Grid>
     </Paper>
   );

@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {itemArr} from '../commonPropTypes';
-import {Paper, Link, Typography, Box, Grid} from '@mui/material';
-import GridTitleMain, {GridTitleMainLight} from './Components/GridTitle';
+import {Paper, Link, Typography, Grid} from '@mui/material';
+import GridTitleMain, {
+  GridTitleMainLight,
+  GridRow} from './Components/CustomGrid';
 import TypographyTitleCell from './Components/TypographyTitleCell';
 
 
@@ -16,7 +18,8 @@ const itemSection = (sectionName, items) => (
         </GridTitleMainLight>
         {items.map(
             (item) => (
-              <React.Fragment key={item.ID}>
+              <GridRow item container xs={12}
+                key={item.ID}>
                 <Grid item xs={1}>{item.count}x</Grid>
                 <Grid item xs={3} zeroMinWidth>
                   <Typography>
@@ -30,8 +33,9 @@ const itemSection = (sectionName, items) => (
                 <Grid item xs={2}>{item.Rarity}</Grid>
                 <Grid item xs={4}>
                   {item.Traits.length > 0 &&
-                  item.Traits.map((v) => `${v}, `)}</Grid>
-              </React.Fragment>))}
+                  item.Traits.map((v) => `${v}, `)}
+                </Grid>
+              </GridRow>))}
       </>
     )}
   </>
@@ -49,7 +53,7 @@ function PartyResult(props) {
       <Grid
         container
         direction='row'
-        rowSpacing={1}
+        rowSpacing={0.3}
         justifyContent='center'
         alignItems='center'
         align='center'>

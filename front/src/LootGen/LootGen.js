@@ -142,7 +142,7 @@ function LootGen() {
         </Box>
         <Button variant="contained" onClick={handleSearch}>Search</Button>
       </Box>
-      <BoxWithScrollbar className='results' my={1} mx={4} py={1}>
+      <BoxWithScrollbar className='results' my={1} mx={4}>
         {modeParty ?
           <PartyResult
             consumable={party.consumable}
