@@ -1,11 +1,11 @@
 import './LootGen.scss';
-import FilterParty from './FilterParty/FilterParty';
-import FilterItem from './FilterItem/FilterItem';
+import FilterParty from './Filter/FilterParty';
+import FilterItem from './Filter/FilterItem';
 import React, {useState} from 'react';
 import {styled, Box, Button, ButtonGroup} from '@mui/material';
 import config from './../config/config.json';
-import ItemResult from './ItemResult/ItemResult';
-import PartyResult from './PartyResult/PartyResult';
+import ItemResult from './Result/ItemResult';
+import PartyResult from './Result/PartyResult';
 
 
 const BoxWithScrollbar = styled(Box)(({theme}) => ({

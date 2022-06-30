@@ -1,17 +1,8 @@
 import React from 'react';
 import {itemArr} from '../commonPropTypes';
-import {styled, Link, Paper, Grid, Typography} from '@mui/material';
-
-const GridTitle = styled(Grid)(({theme}) => ({
-  position: 'sticky',
-  top: '-8px',
-  backgroundColor: theme.palette.primary.main,
-  color: theme.palette.text.secondary,
-}));
-
-const TypographyTitleCell = styled(Typography)(({theme}) => ({
-  color: theme.palette.primary.contrastText,
-}));
+import {Link, Paper, Grid, Typography} from '@mui/material';
+import GridTitleMain from './Components/GridTitle';
+import TypographyTitleCell from './Components/TypographyTitleCell';
 
 /**
  * @param {*} props
@@ -29,7 +20,7 @@ function ItemResult(props) {
         justifyContent="center"
         alignItems="center"
         align="center">
-        <GridTitle container
+        <GridTitleMain container
           item xs={12}>
           <Grid item xs={1}>
             <TypographyTitleCell>Count</TypographyTitleCell>
@@ -49,7 +40,7 @@ function ItemResult(props) {
           <Grid item xs={4}>
             <TypographyTitleCell>Traits</TypographyTitleCell>
           </Grid>
-        </GridTitle>
+        </GridTitleMain>
 
         {items.length > 0 &&
           items.map(
