@@ -45,21 +45,21 @@ function ItemResult(props) {
         {items.length > 0 &&
           items.map(
               (item) => (
-                <GridRow item container key={item.ID}>
+                <GridRow item container key={item.id}>
                   <Grid item xs={1}>{item.count}x</Grid>
                   <Grid item xs={3} zeroMinWidth>
                     <Typography>
-                      <Link href={item.URL} target='_blank'>
-                        {item.Title}
+                      <Link href={item.url} target='_blank'>
+                        {item.name}
                       </Link>
                     </Typography>
                   </Grid>
-                  <Grid item xs={1}>{item.Lvl}</Grid>
-                  <Grid item xs={1}>{item.Price}</Grid>
-                  <Grid item xs={2}>{item.Rarity}</Grid>
+                  <Grid item xs={1}>{item.level}</Grid>
+                  <Grid item xs={1}>{item.price}</Grid>
+                  <Grid item xs={2}>{item.rarity}</Grid>
                   <Grid item xs={4}>
-                    {item.Traits.length > 0 &&
-                    item.Traits.map((v) => `${v}, `)}</Grid>
+                    {item.trait_raw.length > 0 &&
+                    item.trait_raw.map((v) => `${v}, `)}</Grid>
                 </GridRow>))}
       </Grid>
     </Paper>

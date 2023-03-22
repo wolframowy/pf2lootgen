@@ -1,0 +1,39 @@
+curl -d '{
+	"size":10000,
+	"_source": [
+		"id",
+		"name",
+		"level",
+		"rarity",
+		"price",
+		"trait_raw",
+		"url"
+	],
+	"query": {
+		"bool": {
+			"must": [
+				{
+					"query_string":{
+						"query":"category:(armor OR equipment OR shield OR siege-weapon OR vehicle OR weapon) "
+					}
+				}
+			],
+			"must_not": [
+				{
+					"term": {
+						"exclude_from_search": true
+					}
+				}
+			]
+		}
+		
+	},
+	"sort": [
+		{
+			"level": {"order": "asc"}
+		},
+		{
+			"name.keyword": {"order": "asc"}
+		}
+	]
+}' -H 'Content-Type: application/json' -X POST https://elasticsearch.aonprd.com/aon/_search > items.json

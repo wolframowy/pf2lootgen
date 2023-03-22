@@ -15,22 +15,29 @@ class ItemType:
     PERMANENT = 'PERMANENT'
     CONSUMABLE = 'CONSUMABLE'
 
+BASE_URL = 'https://2e.aonprd.com'
 
 class LootGen:
 
     def __init__(self):
         file_dir = os.path.dirname(__file__)
         self.treasure_table = pd.read_csv(os.path.join(file_dir, './../db/treasure_by_level.csv'), sep=';')
-        items = pd.read_csv(os.path.join(file_dir, './../db/items.csv'), sep=';', encoding='utf_8', quotechar="'", converters={'Traits': json.loads}) \
-            .astype({'ID': 'int32', 'Lvl': 'int32', 'Price': 'float64', 'Traits': 'object'})
-        self.cons = items[items['Traits'].apply(lambda x: 'Consumable' in x)]
-        self.perm = items[~items['Traits'].apply(lambda x: 'Consumable' in x)]
-        self.perm_common = self.perm[self.perm['Rarity'] == 'Common']
-        self.perm_uncommon = self.perm[self.perm['Rarity'] == 'Uncommon']
-        self.perm_rare = self.perm[self.perm['Rarity'] == 'Rare']
-        self.cons_common = self.cons[self.cons['Rarity'] == 'Common']
-        self.cons_uncommon = self.cons[self.cons['Rarity'] == 'Uncommon']
-        self.cons_rare = self.cons[self.cons['Rarity'] == 'Rare']
+        source_json = json.loads(open(os.path.join(file_dir, './../db/items.json')).read())
+        # items = pd.read_csv(os.path.join(file_dir, './../db/items.csv'), sep=';', encoding='utf_8', quotechar="'", converters={'Traits': json.loads}) \
+        #    .astype({'ID': 'int32', 'Lvl': 'int32', 'Price': 'float64', 'Traits': 'object'})
+        item_list = [v['_source'] for v in source_json['hits']['hits']]
+        items = pd.DataFrame.from_dict(item_list)
+        items = items.fillna(value={'trait_raw': '[]', 'price': 0})
+        items['price'] = items['price'].apply(lambda p: p/100)
+        items['url'] = items['url'].apply(lambda u: BASE_URL + u)
+        self.cons = items[items['trait_raw'].apply(lambda x: 'Consumable' in x)]
+        self.perm = items[~items['trait_raw'].apply(lambda x: 'Consumable' in x)]
+        self.perm_common = self.perm[self.perm['rarity'] == 'common']
+        self.perm_uncommon = self.perm[self.perm['rarity'] == 'uncommon']
+        self.perm_rare = self.perm[self.perm['rarity'] == 'rare']
+        self.cons_common = self.cons[self.cons['rarity'] == 'common']
+        self.cons_uncommon = self.cons[self.cons['rarity'] == 'uncommon']
+        self.cons_rare = self.cons[self.cons['rarity'] == 'rare']
 
     @staticmethod
     def __row_to_entry__(series):
@@ -73,25 +80,25 @@ class LootGen:
         cons_pool = self.cons_common if rarity == Rarity.COMMON else (pd.concat([self.cons_common, self.cons_uncommon])
                                                                       if rarity == Rarity.UNCOMMON else self.cons)
         for key, val in perm_ct.items():
-            subset = perm_pool[perm_pool['Lvl'] == int(key)]
+            subset = perm_pool[perm_pool['level'] == int(key)]
             n = subset.shape[0]
             for i in range(val):
                 entry = self.__row_to_entry__(subset.iloc[randrange(n)])
-                if(entry['ID'] in r_perm.keys()):
-                    r_perm[entry['ID']]['count'] += 1
+                if(entry['id'] in r_perm.keys()):
+                    r_perm[entry['id']]['count'] += 1
                 else:
-                    r_perm[entry['ID']] = { **entry, 'count': 1 }
+                    r_perm[entry['id']] = { **entry, 'count': 1 }
         for key, val in cons_ct.items():
-            subset = cons_pool[cons_pool['Lvl'] == int(key)]
+            subset = cons_pool[cons_pool['level'] == int(key)]
             n = subset.shape[0]
             if not n:
                 continue
             for i in range(val):
                 entry =  self.__row_to_entry__(subset.iloc[randrange(n)])
-                if(entry['ID'] in r_perm.keys()):
-                    r_cons[entry['ID']]['count'] += 1
+                if(entry['id'] in r_perm.keys()):
+                    r_cons[entry['id']]['count'] += 1
                 else:
-                    r_cons[entry['ID']] = { **entry, 'count': 1 }
+                    r_cons[entry['id']] = { **entry, 'count': 1 }
         return list(r_perm.values()), list(r_cons.values()), curr
 
     def generate_items_of_level(self, ilvl: int, n: int, rarity=None, item_type=None):
@@ -108,16 +115,16 @@ class LootGen:
         else:
             pool = self.cons_rare if rarity == Rarity.RARE else (self.cons_uncommon if rarity == Rarity.UNCOMMON
                                                                  else self.cons_common)
-        pool = pool[pool['Lvl'] == ilvl]
+        pool = pool[pool['level'] == ilvl]
         ct = pool.shape[0]
         if not ct:
             return ret
         for i in range(n):
             entry = self.__row_to_entry__(pool.iloc[randrange(ct)])
-            if(entry['ID'] in ret.keys()):
-                ret[entry['ID']]['count'] += 1
+            if(entry['id'] in ret.keys()):
+                ret[entry['id']]['count'] += 1
             else:
-                ret[entry['ID']] = { **entry, 'count': 1 }
+                ret[entry['id']] = { **entry, 'count': 1 }
         return list(ret.values())
 
 
