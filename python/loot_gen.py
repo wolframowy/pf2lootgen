@@ -23,11 +23,10 @@ class LootGen:
         file_dir = os.path.dirname(__file__)
         self.treasure_table = pd.read_csv(os.path.join(file_dir, './../db/treasure_by_level.csv'), sep=';')
         source_json = json.loads(open(os.path.join(file_dir, './../db/items.json')).read())
-        # items = pd.read_csv(os.path.join(file_dir, './../db/items.csv'), sep=';', encoding='utf_8', quotechar="'", converters={'Traits': json.loads}) \
-        #    .astype({'ID': 'int32', 'Lvl': 'int32', 'Price': 'float64', 'Traits': 'object'})
         item_list = [v['_source'] for v in source_json['hits']['hits']]
         items = pd.DataFrame.from_dict(item_list)
-        items = items.fillna(value={'trait_raw': '[]', 'price': 0})
+        items['price'] = items['price'].fillna(0)
+        items['trait_raw'] = items['trait_raw'].fillna("").apply(list)
         items['price'] = items['price'].apply(lambda p: p/100)
         items['url'] = items['url'].apply(lambda u: BASE_URL + u)
         self.cons = items[items['trait_raw'].apply(lambda x: 'Consumable' in x)]
@@ -51,15 +50,6 @@ class LootGen:
             else:
                 ret[val] = row[val]
         return ret
-
-        # arr = []
-        # for v in series.values.tolist():
-        #     if type(v) == np.int32 or type(v) == np.int64:
-        #         arr.append(int(v))
-        #     else:
-        #         arr.append(v)
-        # return Entry(arr)
-
 
     def generate_loot_for_player_level(self, pt_lvl: int, pt_size: int, rarity: str = None):
         if not rarity:

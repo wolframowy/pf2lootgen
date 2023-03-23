@@ -1,0 +1,9 @@
+.idea
+.vscode
+token.json
+__pycache__
+
+# Python virtual environment
+venv*
+
+front\node_modules

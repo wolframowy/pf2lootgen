@@ -1,0 +1,11 @@
+FROM node:stretch-slim
+
+RUN npm install -g serve
+
+WORKDIR /app
+COPY front/build build
+
+EXPOSE 3000
+ENTRYPOINT [ "serve", "-s", "build", \
+                      "-l", "3000"]
+
