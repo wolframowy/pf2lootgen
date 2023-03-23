@@ -1,12 +1,14 @@
 version: "3.9"
 services:
   front:
+    image: wolframowy/pf2lootgen_frontend
     build: 
       context: .
       dockerfile: docker/front/dockerfile
     ports:
       - "3000:3000"
   back:
+    image: wolframowy/pf2lootgen_backend
     build: 
       context: .
       dockerfile: docker/back/dockerfile
