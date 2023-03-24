@@ -3,11 +3,11 @@ services:
   front:
     image: wolframowy/pf2lootgen_frontend
     platform: linux/arm/v7
-    environment:
-      - SERVER_URL=back:5000
     build: 
       context: .
       dockerfile: docker/front/dockerfile
+      args:
+        - REACT_APP_SERVER_URL=http://pokierejszowany.ddns.net:5000/api
     ports:
       - "3000:3000"
   back:

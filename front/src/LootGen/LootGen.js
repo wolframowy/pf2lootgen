@@ -7,10 +7,6 @@ import config from './../config/config.json';
 import ItemResult from './Result/ItemResult';
 import PartyResult from './Result/PartyResult';
 
-const SERVER_URL = process.env.SERVER_URL ?
-  process.env.SERVER_URL :
-  config.SERVER_URL;
-
 const BoxWithScrollbar = styled(Box)(({theme}) => ({
   '&::-webkit-scrollbar': {
     width: '10px',
@@ -36,6 +32,10 @@ const BoxWithScrollbar = styled(Box)(({theme}) => ({
  * @return {object} LootGen container
  */
 function LootGen() {
+  const SERVER_URL = process.env.REACT_APP_SERVER_URL ?
+  process.env.REACT_APP_SERVER_URL :
+  config.SERVER_URL;
+
   const [modeParty, setModeParty] = useState(true);
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState([]);

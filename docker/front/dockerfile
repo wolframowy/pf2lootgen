@@ -1,9 +1,19 @@
 FROM node:stretch-slim
 
+WORKDIR /app
+COPY front .
+
+ARG REACT_APP_SERVER_URL
+
+RUN npm install
+RUN npm run build
+
+FROM node:stretch-slim
+
 RUN npm install -g serve
 
 WORKDIR /app
-COPY front/build build
+COPY --from=0 /app/build build
 
 EXPOSE 3000
 ENTRYPOINT [ "serve", "-s", "build", \

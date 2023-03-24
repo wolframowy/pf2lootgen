@@ -7,3 +7,4 @@ __pycache__
 venv*
 
 front\node_modules
+front\build
