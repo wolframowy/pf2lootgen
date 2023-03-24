@@ -2,6 +2,7 @@ version: "3.9"
 services:
   front:
     image: wolframowy/pf2lootgen_frontend
+    platform: linux/arm/v7
     build: 
       context: .
       dockerfile: docker/front/dockerfile
@@ -9,6 +10,7 @@ services:
       - "3000:3000"
   back:
     image: wolframowy/pf2lootgen_backend
+    platform: linux/arm/v7
     build: 
       context: .
       dockerfile: docker/back/dockerfile

@@ -1,21 +1,13 @@
-FROM tiangolo/uwsgi-nginx-flask:python3.8-alpine
-
-RUN apk add --update --no-cache gcc g++
+FROM python:alpine
 
 WORKDIR /app
 COPY db db
 COPY python python
-
+RUN pip3 install gunicorn
 RUN pip3 install --no-cache-dir -r ./python/req_server.txt
-
-ENV PYTHONPATH=$PYTHONPATH:/usr/local/lib/$ALPINEPYTHON/site-packages:/usr/lib/$ALPINEPYTHON/site-packages
 
 WORKDIR /app/python
 EXPOSE 5000
-ENTRYPOINT [ "uwsgi", "--http-socket", "0.0.0.0:5000", \
-                      "--uid", "uwsgi", \
-                      "--wsgi-file", "server.py", \
-                      "--module", "server", \
-                      "--callable", "app", \
-                      "--processes", "4", \
-                      "--threads", "2"]
+ENTRYPOINT [ "guniconr", "-b", "0.0.0.0:5000", \
+                      "-2", "4", \
+                      "server:app"]

@@ -1,8 +1,7 @@
 import os
-import pandas as pd
-import numpy as np
 import argparse
 import json
+import csv
 from random import randrange
 
 class Rarity:
@@ -17,49 +16,59 @@ class ItemType:
 
 BASE_URL = 'https://2e.aonprd.com'
 
+def parse_treasure_csv(path):
+    reader = csv.DictReader(open(path), delimiter=';')
+    treasure_table = []
+    for row in reader:
+        treasure_table.append({
+            'Level': int(row['Level']),
+            'TotVal': int(row['TotVal']),
+            'Permanent': json.loads(row['Permanent']),
+            'Consumables': json.loads(row['Consumables']),
+            'Currency': int(row['Currency']),
+            'AddCurr': int(row['AddCurr'])
+        })
+    return treasure_table
+
+def fillNa(arr, key, val):
+    for row in arr:
+        if key not in row.keys():
+            row[key] = val
+
+def mapVals(arr, key, func):
+    for row in arr:
+        row[key] = func(row[key])
+
+
 class LootGen:
 
     def __init__(self):
         file_dir = os.path.dirname(__file__)
-        self.treasure_table = pd.read_csv(os.path.join(file_dir, './../db/treasure_by_level.csv'), sep=';')
+        self.treasure_table = parse_treasure_csv(os.path.join(file_dir, './../db/treasure_by_level.csv'))
         source_json = json.loads(open(os.path.join(file_dir, './../db/items.json')).read())
         item_list = [v['_source'] for v in source_json['hits']['hits']]
-        items = pd.DataFrame.from_dict(item_list)
-        items['price'] = items['price'].fillna(0)
-        items['trait_raw'] = items['trait_raw'].fillna("").apply(list)
-        items['price'] = items['price'].apply(lambda p: p/100)
-        items['url'] = items['url'].apply(lambda u: BASE_URL + u)
-        self.cons = items[items['trait_raw'].apply(lambda x: 'Consumable' in x)]
-        self.perm = items[~items['trait_raw'].apply(lambda x: 'Consumable' in x)]
-        self.perm_common = self.perm[self.perm['rarity'] == 'common']
-        self.perm_uncommon = self.perm[self.perm['rarity'] == 'uncommon']
-        self.perm_rare = self.perm[self.perm['rarity'] == 'rare']
-        self.cons_common = self.cons[self.cons['rarity'] == 'common']
-        self.cons_uncommon = self.cons[self.cons['rarity'] == 'uncommon']
-        self.cons_rare = self.cons[self.cons['rarity'] == 'rare']
-
-    @staticmethod
-    def __row_to_entry__(series):
-        ret = {}
-        row = series.to_dict()
-        for val in row:
-            if type(row[val]) == np.int32 or type(row[val]) == np.int64:
-                ret[val] = int(row[val])
-            elif type(row[val]) == np.float32 or type(row[val]) == np.float64:
-                ret[val] = float(row[val])
-            else:
-                ret[val] = row[val]
-        return ret
+        fillNa(item_list, 'trait_raw', [])
+        fillNa(item_list, 'price', 0)
+        mapVals(item_list, 'price', lambda p: p/100)
+        mapVals(item_list, 'url', lambda u: BASE_URL + u)
+        self.cons = [x for x in item_list if 'Consumable' in x['trait_raw']]
+        self.perm = [x for x in item_list if 'Consumable' not in x['trait_raw']]
+        self.perm_common = [x for x in self.perm if x['rarity'] == 'common']
+        self.perm_uncommon = [x for x in self.perm if x['rarity'] == 'uncommon']
+        self.perm_rare = [x for x in self.perm if x['rarity'] == 'rare']
+        self.cons_common = [x for x in self.cons if x['rarity'] == 'common']
+        self.cons_uncommon = [x for x in self.cons if x['rarity'] == 'uncommon']
+        self.cons_rare = [x for x in self.cons if x['rarity'] == 'rare']
 
     def generate_loot_for_player_level(self, pt_lvl: int, pt_size: int, rarity: str = None):
         if not rarity:
             rarity = Rarity.RARE
-        v = self.treasure_table[self.treasure_table['Level'] == pt_lvl]
-        perm_ct = eval(v.iloc[0]['Permanent'])
-        cons_ct = eval(v.iloc[0]['Consumables'])
-        curr = int(v.iloc[0]['Currency'])
+        v = next((x for x in self.treasure_table if x['Level'] == pt_lvl))
+        perm_ct = v['Permanent']
+        cons_ct = v['Consumables']
+        curr = v['Currency']
         extra = max(0, pt_size - 4)
-        curr += extra * int(v.iloc[0]['AddCurr'])
+        curr += extra * v['AddCurr']
         perm_ct[str(pt_lvl)] += extra
         cons_ct[str(pt_lvl)] += extra
         cons_ct[str(min(20, pt_lvl + 1))] += extra
@@ -70,21 +79,21 @@ class LootGen:
         cons_pool = self.cons_common if rarity == Rarity.COMMON else (pd.concat([self.cons_common, self.cons_uncommon])
                                                                       if rarity == Rarity.UNCOMMON else self.cons)
         for key, val in perm_ct.items():
-            subset = perm_pool[perm_pool['level'] == int(key)]
-            n = subset.shape[0]
+            subset = [x for x in perm_pool if x['level'] == int(key)]
+            n = len(subset)
             for i in range(val):
-                entry = self.__row_to_entry__(subset.iloc[randrange(n)])
+                entry = subset[randrange(n)]
                 if(entry['id'] in r_perm.keys()):
                     r_perm[entry['id']]['count'] += 1
                 else:
                     r_perm[entry['id']] = { **entry, 'count': 1 }
         for key, val in cons_ct.items():
-            subset = cons_pool[cons_pool['level'] == int(key)]
-            n = subset.shape[0]
+            subset = [x for x in cons_pool if x['level'] == int(key)]
+            n = len(subset)
             if not n:
                 continue
             for i in range(val):
-                entry =  self.__row_to_entry__(subset.iloc[randrange(n)])
+                entry =  subset[randrange(n)]
                 if(entry['id'] in r_perm.keys()):
                     r_cons[entry['id']]['count'] += 1
                 else:
@@ -105,12 +114,12 @@ class LootGen:
         else:
             pool = self.cons_rare if rarity == Rarity.RARE else (self.cons_uncommon if rarity == Rarity.UNCOMMON
                                                                  else self.cons_common)
-        pool = pool[pool['level'] == ilvl]
-        ct = pool.shape[0]
+        pool = [x for x in pool if x['level'] == ilvl]
+        ct = len(pool)
         if not ct:
             return ret
         for i in range(n):
-            entry = self.__row_to_entry__(pool.iloc[randrange(ct)])
+            entry = pool[randrange(ct)]
             if(entry['id'] in ret.keys()):
                 ret[entry['id']]['count'] += 1
             else:
