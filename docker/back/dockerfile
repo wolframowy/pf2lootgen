@@ -8,6 +8,6 @@ RUN pip3 install --no-cache-dir -r ./python/req_server.txt
 
 WORKDIR /app/python
 EXPOSE 5000
-ENTRYPOINT [ "guniconr", "-b", "0.0.0.0:5000", \
-                      "-2", "4", \
+ENTRYPOINT [ "gunicorn", "-b", "0.0.0.0:5000", \
+                      "-w", "4", \
                       "server:app"]
