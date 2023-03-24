@@ -76,7 +76,7 @@ class LootGen:
         r_cons = {}
         perm_pool = self.perm_common if rarity == Rarity.COMMON else (self.perm_common + self.perm_uncommon
                                                                       if rarity == Rarity.UNCOMMON else self.perm)
-        cons_pool = self.cons_common if rarity == Rarity.COMMON else (self.cons_common, self.cons_uncommon
+        cons_pool = self.cons_common if rarity == Rarity.COMMON else (self.cons_common + self.cons_uncommon
                                                                       if rarity == Rarity.UNCOMMON else self.cons)
         for key, val in perm_ct.items():
             subset = [x for x in perm_pool if x['level'] == int(key)]

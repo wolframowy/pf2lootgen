@@ -7,6 +7,9 @@ import config from './../config/config.json';
 import ItemResult from './Result/ItemResult';
 import PartyResult from './Result/PartyResult';
 
+const SERVER_URL = process.env.SERVER_URL ?
+  process.env.SERVER_URL :
+  config.SERVER_URL;
 
 const BoxWithScrollbar = styled(Box)(({theme}) => ({
   '&::-webkit-scrollbar': {
@@ -63,7 +66,7 @@ function LootGen() {
 
   const getPartyLoot = () => {
     setLoading(true);
-    fetch(config.SERVER_URL + '/party/' + plvl + '/' + size + '?r=' + rarity)
+    fetch(SERVER_URL + '/party/' + plvl + '/' + size + '?r=' + rarity)
         .then((res) => res.json())
         .then(
             (res) => {
@@ -79,7 +82,7 @@ function LootGen() {
 
   const getItemLoot = () => {
     setLoading(true);
-    fetch(config.SERVER_URL + '/item/' + ilvl + '/' + count +
+    fetch(SERVER_URL + '/item/' + ilvl + '/' + count +
       '?r=' + rarity + '&t=' + type )
         .then((res) => res.json())
         .then(
