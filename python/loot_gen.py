@@ -64,8 +64,8 @@ class LootGen:
         if not rarity:
             rarity = Rarity.RARE
         v = next((x for x in self.treasure_table if x['Level'] == pt_lvl))
-        perm_ct = v['Permanent']
-        cons_ct = v['Consumables']
+        perm_ct = v['Permanent'].copy()
+        cons_ct = v['Consumables'].copy()
         curr = v['Currency']
         extra = max(0, pt_size - 4)
         curr += extra * v['AddCurr']
@@ -74,6 +74,7 @@ class LootGen:
         cons_ct[str(min(20, pt_lvl + 1))] += extra
         r_perm = {}
         r_cons = {}
+        print(v)
         perm_pool = self.perm_common if rarity == Rarity.COMMON else (self.perm_common + self.perm_uncommon
                                                                       if rarity == Rarity.UNCOMMON else self.perm)
         cons_pool = self.cons_common if rarity == Rarity.COMMON else (self.cons_common + self.cons_uncommon
