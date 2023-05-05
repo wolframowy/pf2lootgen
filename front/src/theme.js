@@ -19,8 +19,14 @@ const themeOptions = {
       main: '#00a3d6',
     },
     background: {
-      default: '#0F8B8D',
+      default: '#449394',
       paper: '#DAD2D8',
+    },
+    custom: {
+      light: '#111111',
+      default: '#000000',
+      dark: '#666666',
+      contrastText: '#AAAAAA',
     },
   },
 };

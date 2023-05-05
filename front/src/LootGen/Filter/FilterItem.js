@@ -1,8 +1,10 @@
 import './../LootGen.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {TextField, Select, MenuItem,
-  FormControl, InputLabel} from '@mui/material';
+import {Select, MenuItem,
+  InputLabel} from '@mui/material';
+import {CustomTextField,
+  CustomFormControl} from '../../Components/CustomTextField';
 
 /**
  * FilterItem component containing filters for item search
@@ -23,8 +25,7 @@ function FilterItem(props) {
 
   return (
     <>
-      <TextField
-        color="secondary"
+      <CustomTextField
         variant="filled"
         className='text_field'
         id='item_lvl'
@@ -35,9 +36,11 @@ function FilterItem(props) {
         onFocus={(event) => {
           event.target.select();
         }}
-        inputProps={{style: {textAlign: 'end'}}}/>
-      <TextField
-        color="secondary"
+        sx={{
+          borderRadius: '5px 0 0 5px',
+        }}
+        inputProps={{style: {textAlign: 'center'}}}/>
+      <CustomTextField
         variant="filled"
         className='text_field'
         id='item_count'
@@ -48,8 +51,8 @@ function FilterItem(props) {
         onFocus={(event) => {
           event.target.select();
         }}
-        inputProps={{style: {textAlign: 'end'}}}/>
-      <FormControl variant="filled">
+        inputProps={{style: {textAlign: 'center'}}}/>
+      <CustomFormControl variant="filled">
         <InputLabel id='rarity_label'>Rarity</InputLabel>
         <Select color="secondary" className='select' id="rarity"
           labelId='rarity_label' label="Rarity"
@@ -58,8 +61,12 @@ function FilterItem(props) {
           <MenuItem value='u'>Uncommon</MenuItem>
           <MenuItem value='r'>Rare</MenuItem>
         </Select>
-      </FormControl>
-      <FormControl variant="filled">
+      </CustomFormControl>
+      <CustomFormControl
+        variant="filled"
+        sx={{
+          'borderRadius': '0 5px 5px 0',
+        }}>
         <InputLabel id='rarity_label'>Type</InputLabel>
         <Select color="secondary" className='select' id="type"
           labelId='rarity_label' label="Type"
@@ -67,7 +74,7 @@ function FilterItem(props) {
           <MenuItem value='p'>Permanent</MenuItem>
           <MenuItem value='c'>Consumable</MenuItem>
         </Select>
-      </FormControl>
+      </CustomFormControl>
     </>
   );
 };
