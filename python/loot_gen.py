@@ -127,6 +127,20 @@ class LootGen:
                 ret[entry['id']] = { **entry, 'count': 1 }
         return list(ret.values())
 
+    # TODO: function to generate loot by price
+    # Questions:
+    # - generate items close to listed price and give margin how much under/over?
+    # - generate a full pool of items that sums up to listed price?
+    # - if second is correct then how to distribute the number of items throughout the reward pool?
+    # - maybe give range of prices for items to be generated (f.e. price: 1000, items price ranging from 100 - 900 so it can be 10 items (10x 100) or just 2 (900 and 100) or anything in between)
+    def generate_items_for_price(self, price_pool: int, n: int, max_ilvl: int, min_ilvl: int, rarity=None, item_type=None):
+        if n > 50:
+            n = 50
+        if not rarity:
+            rarity = Rarity.RARE
+        if not item_type:
+            item_type = ItemType.PERMANENT
+        return
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate loot for specific level and party size')
