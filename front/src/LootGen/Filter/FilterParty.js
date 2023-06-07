@@ -53,20 +53,6 @@ function FilterParty(props) {
         variant="filled"
         sx={{
           'borderRadius': '0 5px 5px 0',
-          '& .MuiInput-underline:after': {
-            borderBottomColor: 'green',
-          },
-          '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-              borderColor: 'red',
-            },
-            '&.Mui-focused fieldset': {
-              borderColor: 'green',
-            },
-            '&:hover fieldset': {
-              borderColor: 'yellow',
-            },
-          },
         }}>
         <InputLabel id='rarity_label'>Max rarity</InputLabel>
         <Select className='select' id="rarity"
