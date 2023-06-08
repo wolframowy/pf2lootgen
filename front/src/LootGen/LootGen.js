@@ -101,6 +101,9 @@ function LootGen() {
         .then((res) => res.json())
         .then(
             (res) => {
+              if (res.length === 0) {
+                alert('No results for current selection!');
+              }
               setItems(res);
               setLoading(false);
             },
@@ -119,6 +122,9 @@ function LootGen() {
         .then((res) => res.json())
         .then(
             (res) => {
+              if (res.length === 0) {
+                alert('No results for current selection!');
+              }
               setPriceItems(res);
               setLoading(false);
             },
