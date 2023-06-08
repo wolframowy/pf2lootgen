@@ -4,6 +4,7 @@ import FilterItem from './Filter/FilterItem';
 import React, {useState} from 'react';
 import {styled, Box, Button, ButtonGroup} from '@mui/material';
 import config from './../config/config.json';
+import {isEmpty} from '../util/utils';
 import ItemResult from './Result/ItemResult';
 import PartyResult from './Result/PartyResult';
 import FilterPrice from './Filter/FilterPrice';
@@ -101,7 +102,7 @@ function LootGen() {
         .then((res) => res.json())
         .then(
             (res) => {
-              if (res.length === 0) {
+              if (isEmpty(res)) {
                 alert('No results for current selection!');
               }
               setItems(res);
@@ -122,7 +123,7 @@ function LootGen() {
         .then((res) => res.json())
         .then(
             (res) => {
-              if (res.length === 0) {
+              if (isEmpty(res)) {
                 alert('No results for current selection!');
               }
               setPriceItems(res);
