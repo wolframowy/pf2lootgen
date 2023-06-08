@@ -56,6 +56,18 @@ def item(ilvl: int, item_no: int):
     ret = loot_gen.generate_items_of_level(ilvl=ilvl, n=item_no, rarity=rarity, item_type=item_type)
     return jsonify(ret)
 
+@app.route('/api/price')
+def price():
+    price_param = int(request.args.get("price"))
+    offset_param = int(request.args.get("offset"))
+    count_param = int(request.args.get("no"))
+    rarity_param = request.args.get("r")
+    item_type_param = request.args.get("t")
+    rarity = RARITY_MAP[rarity_param] if rarity_param in RARITY_MAP else None
+    item_type = ITEM_TYPE_MAP[item_type_param] if item_type_param in ITEM_TYPE_MAP else None
+    ret = loot_gen.generate_items_for_price(price=price_param, offset=offset_param, n=count_param, rarity=rarity, item_type=item_type)
+    return jsonify(ret)
+
 
 if __name__ == '__main__':
     app.run()

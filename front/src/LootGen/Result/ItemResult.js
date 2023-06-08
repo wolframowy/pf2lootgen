@@ -42,7 +42,7 @@ function ItemResult(props) {
           </Grid>
         </GridTitleMain>
 
-        {items.length > 0 &&
+        {items.length > 0 ?
           items.map(
               (item) => (
                 <GridRow item container key={item.id}>
@@ -60,7 +60,14 @@ function ItemResult(props) {
                   <Grid item xs={4}>
                     {item.trait_raw.length > 0 &&
                     item.trait_raw.map((v) => `${v}, `)}</Grid>
-                </GridRow>))}
+                </GridRow>)) :
+              <GridRow item container key={9999}>
+                <Typography>
+                      No results for current selection
+                </Typography>
+              </GridRow>
+
+        }
       </Grid>
     </Paper>
   );

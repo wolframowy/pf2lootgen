@@ -6,6 +6,7 @@ import {styled, Box, Button, ButtonGroup} from '@mui/material';
 import config from './../config/config.json';
 import ItemResult from './Result/ItemResult';
 import PartyResult from './Result/PartyResult';
+import FilterPrice from './Filter/FilterPrice';
 
 const BoxWithScrollbar = styled(Box)(({theme}) => ({
   '&::-webkit-scrollbar': {
@@ -27,6 +28,12 @@ const BoxWithScrollbar = styled(Box)(({theme}) => ({
   },
 }));
 
+const STATES = {
+  PARTY: 'PARTY',
+  ITEM: 'ITEM',
+  PRICE: 'PRICE',
+};
+
 /**
  * LootGen container
  * @return {object} LootGen container
@@ -36,9 +43,10 @@ function LootGen() {
   process.env.REACT_APP_SERVER_URL :
   config.SERVER_URL;
 
-  const [modeParty, setModeParty] = useState(true);
+  const [modeParty, setModeParty] = useState(STATES.PARTY);
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState([]);
+  const [priceItems, setPriceItems] = useState([]);
   const [party, setParty] = useState({
     consumable: [],
     perm: [],
@@ -51,6 +59,8 @@ function LootGen() {
   const [rarity, setRarity] = useState('r');
   const [count, setCount] = useState(5);
   const [type, setType] = useState('p');
+  const [price, setPrice] = useState(100);
+  const [offset, setOffset] = useState(10);
 
   const normalizeLevel = (lvl) => {
     return lvl > 20 ? 20 : (lvl < 1 ? 1 : parseInt(lvl));
@@ -62,6 +72,10 @@ function LootGen() {
 
   const normalizeCount = (count) => {
     return count > 50 ? 50 : (count < 1 ? 1 : parseInt(count));
+  };
+
+  const normalizeMoney = (money) => {
+    return money <= 0 ? 1 : parseInt(money);
   };
 
   const getPartyLoot = () => {
@@ -97,17 +111,74 @@ function LootGen() {
             });
   };
 
+  const getPriceLoot = () => {
+    setLoading(true);
+    fetch(SERVER_URL + '/price?price=' + price +
+      '&offset=' + offset + '&no=' + count +
+      '&r=' + rarity + '&t=' + type )
+        .then((res) => res.json())
+        .then(
+            (res) => {
+              setPriceItems(res);
+              setLoading(false);
+            },
+            (error) => {
+              setLoading(false);
+              setPriceItems([]);
+              alert(error);
+            });
+  };
+
   const handlePlvlChange = (e) => setPlvl(normalizeLevel(e.target.value));
   const handleIlvlChange = (e) => setIlvl(normalizeLevel(e.target.value));
   const handleSizeChange = (e) => setSize(normalizeSize(e.target.value));
   const handleCountChange = (e) => setCount(normalizeCount(e.target.value));
   const handleRarityChange = (event) => setRarity(event.target.value);
   const handleTypeChange = (e) => setType(e.target.value);
+  const handlePriceChange = (e) => setPrice(normalizeMoney(e.target.value));
+  const handleOffsetChange = (e) => setOffset(normalizeMoney(e.target.value));
 
-  const handleModeClick = (mode) => setModeParty(mode === 'p');
+  const handleModeClick = (mode) => setModeParty(mode);
 
   const handleSearch = () => {
-    modeParty ? getPartyLoot() : getItemLoot();
+    switch (modeParty) {
+      case STATES.PARTY:
+        getPartyLoot();
+        break;
+      case STATES.ITEM:
+        getItemLoot();
+        break;
+      case STATES.PRICE:
+        getPriceLoot();
+        break;
+      default:
+        alert('Wrong state! Something went wrong!');
+    }
+  };
+
+  const renderFilters = () => {
+    if (modeParty === STATES.PARTY) {
+      return <FilterParty {...partyProps} />;
+    } else if (modeParty === STATES.ITEM) {
+      return <FilterItem {...itemProps} />;
+    } else if (modeParty === STATES.PRICE) {
+      return <FilterPrice {...priceProps} />;
+    }
+    return <div></div>;
+  };
+
+  const renderResults = () => {
+    if (modeParty === STATES.PARTY) {
+      return <PartyResult
+        consumable={party.consumable}
+        perm={party.perm}
+        currency={party.currency} />;
+    } else if (modeParty === STATES.ITEM) {
+      return <ItemResult items={items} />;
+    } else if (modeParty === STATES.PRICE) {
+      return <ItemResult items={priceItems} />;
+    }
+    return <div></div>;
   };
 
   const partyProps = {
@@ -121,37 +192,45 @@ function LootGen() {
     count, handleCountChange,
     rarity, handleRarityChange,
     type, handleTypeChange};
+  const priceProps = {
+    price: price,
+    handlePriceChange: handlePriceChange,
+    offset: offset,
+    handleOffsetChange: handleOffsetChange,
+    count, handleCountChange,
+    rarity, handleRarityChange,
+    type, handleTypeChange};
 
   return (
     <Box className='LootGen'>
       <Box className='filter'>
         <ButtonGroup variant="contained" color="primary"
           aria-label="text primary button group">
-          <Button color={modeParty ? 'primary' : 'secondary'}
+          <Button color={modeParty === STATES.PARTY ? 'primary' : 'secondary'}
             onClick={() => {
-              handleModeClick('p');
+              handleModeClick(STATES.PARTY);
             }}>
               Party
           </Button>
-          <Button color={modeParty ? 'secondary' : 'primary'}
+          <Button color={modeParty === STATES.ITEM ? 'primary' : 'secondary'}
             onClick={() => {
-              handleModeClick('i');
-            }}>Item</Button>
+              handleModeClick(STATES.ITEM);
+            }}>Item
+          </Button>
+          <Button color={modeParty === STATES.PRICE ? 'primary' : 'secondary'}
+            onClick={() => {
+              handleModeClick(STATES.PRICE);
+            }}>
+              Price
+          </Button>
         </ButtonGroup>
         <Box my={1}>
-          {modeParty ?
-            <FilterParty {...partyProps} /> :
-            <FilterItem {...itemProps} />}
+          {renderFilters()}
         </Box>
         <Button variant="contained" onClick={handleSearch}>Search</Button>
       </Box>
       <BoxWithScrollbar className='results' my={1} mx={4}>
-        {modeParty ?
-          <PartyResult
-            consumable={party.consumable}
-            perm={party.perm}
-            currency={party.currency} /> :
-          <ItemResult items={items} />}
+        {renderResults()}
       </BoxWithScrollbar>
     </Box>
   );

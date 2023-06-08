@@ -127,20 +127,31 @@ class LootGen:
                 ret[entry['id']] = { **entry, 'count': 1 }
         return list(ret.values())
 
-    # TODO: function to generate loot by price
-    # Questions:
-    # - generate items close to listed price and give margin how much under/over?
-    # - generate a full pool of items that sums up to listed price?
-    # - if second is correct then how to distribute the number of items throughout the reward pool?
-    # - maybe give range of prices for items to be generated (f.e. price: 1000, items price ranging from 100 - 900 so it can be 10 items (10x 100) or just 2 (900 and 100) or anything in between)
-    def generate_items_for_price(self, price_pool: int, n: int, max_ilvl: int, min_ilvl: int, rarity=None, item_type=None):
+    def generate_items_for_price(self, price: int, offset: int, n: int, rarity=None, item_type=None):
         if n > 50:
             n = 50
         if not rarity:
-            rarity = Rarity.RARE
+            rarity = Rarity.UNCOMMON
         if not item_type:
             item_type = ItemType.PERMANENT
-        return
+        ret = {}
+        if item_type == ItemType.PERMANENT:
+            pool = self.perm_rare if rarity == Rarity.RARE else (self.perm_uncommon if rarity == Rarity.UNCOMMON
+                                                                 else self.perm_common)
+        else:
+            pool = self.cons_rare if rarity == Rarity.RARE else (self.cons_uncommon if rarity == Rarity.UNCOMMON
+                                                                 else self.cons_common)
+        pool = [x for x in pool if price - offset <= x['price'] <= price + offset]
+        ct = len(pool)
+        if not ct:
+            return ret
+        for i in range(n):
+            entry = pool[randrange(ct)]
+            if(entry['id'] in ret.keys()):
+                ret[entry['id']]['count'] += 1
+            else:
+                ret[entry['id']] = { **entry, 'count': 1 }
+        return list(ret.values())
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate loot for specific level and party size')
@@ -160,6 +171,16 @@ if __name__ == '__main__':
                               help='Integer - Rarity of items, 1 - Common, 2 - Uncommon, 3 - Rare')
     parser_items.add_argument('--type', metavar='type', type=int,
                               help='Integer - Type of items, 1 - Permanent, 2 - Consumable')
+    
+    parser_price = subparsers.add_parser('price', help='price help')
+    parser_price.add_argument('price', metavar='price', type=int, help='Integer - Price of item to be generated in gold')
+    parser_price.add_argument('offset', metavar='offset', type=int, help='Integer - offset cost in gold to determine how cheaper or more expensive the item can be')
+    parser_price.add_argument('N', metavar='n', type=int, help='Integer - Number of items to be generated')
+    parser_price.add_argument('--rarity', metavar='rarity', type=int,
+                              help='Integer - Rarity of items, 1 - Common, 2 - Uncommon, 3 - Rare')
+    parser_price.add_argument('--type', metavar='type', type=int,
+                              help='Integer - Type of items, 1 - Permanent, 2 - Consumable')
+    
     args = parser.parse_args()
     loot_gen = LootGen()
     if args.subparser_name == 'party':
@@ -175,6 +196,10 @@ if __name__ == '__main__':
     elif args.subparser_name == 'items':
         p = loot_gen.generate_items_of_level(args.ilvl, args.N, args.rarity if args.rarity else Rarity.COMMON,
                                              args.type if args.type else ItemType.PERMANENT)
+        for r in p:
+            print(r)
+    elif args.subparser_name == 'price':
+        p = loot_gen.generate_items_for_price(args.price, args.offset, args.N, args.rarity, args.type)
         for r in p:
             print(r)
     else:
