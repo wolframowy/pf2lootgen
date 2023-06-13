@@ -9,7 +9,7 @@ import {Box, Link, Paper, Typography} from '@mui/material';
 function Footer() {
   return (
     <Box mx={1} mb={1} className='Footer'>
-      <Paper>
+      <Paper sx={{position: 'relative'}}>
         <Box p={1}>
           <Typography fontSize={11} paragraph
             m={0} variant='caption' align='justify'>
@@ -22,6 +22,12 @@ function Footer() {
             Paizo Inc. and Paizo products, visit paizo.com.`}
           </Typography>
         </Box>
+        <div style={{textAlign: 'right',
+          position: 'absolute', bottom: '2px', right: '2px'}}>
+          <Typography fontSize={10}>
+            v{process.env.REACT_APP_VERSION}
+          </Typography>
+        </div>
       </Paper>
     </Box>
   );
