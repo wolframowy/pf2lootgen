@@ -7,9 +7,9 @@
     align-items: stretch;
 
     .filter {
-        margin: 0 10px 0 10px;
+        padding: 0 10px 0 10px;
         flex-basis: 8rem; 
-        min-width: 500px;
+        min-width: 0;
         text-align: center;
         display: flex;
         align-items: center;
@@ -28,6 +28,7 @@
     .results {
         flex-grow: 1;
         overflow-y: auto;
+        min-width: 500px;
     }
 
 
