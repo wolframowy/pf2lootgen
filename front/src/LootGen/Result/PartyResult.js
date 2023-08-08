@@ -1,3 +1,4 @@
+import './result.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {itemArr} from '../commonPropTypes';
@@ -23,8 +24,15 @@ const itemSection = (sectionName, items) => (
                 <Grid item xs={1}>{item.count}x</Grid>
                 <Grid item xs={3} zeroMinWidth>
                   <Typography>
-                    <Link href={item.url} target='_blank'>
+                    <Link href={item.url} target='_blank'
+                      className='iframe-link'>
                       {item.name}
+                      <iframe
+                        id={`${item.id}iframe`}
+                        src={item.url}
+                        loading='lazy'
+                        className='iframe'
+                      />
                     </Link>
                   </Typography>
                 </Grid>
@@ -53,9 +61,7 @@ function PartyResult(props) {
       <Grid
         container
         direction='row'
-        rowSpacing={0.3}
-        justifyContent='center'
-        alignItems='center'
+        rowSpacing={0}
         align='center'>
         <GridTitleMain container
           item xs={12}>

@@ -13,6 +13,9 @@ const GridTitleMainLight = styled(Grid)(({theme}) => ({
 const GridRow = styled(Grid)(({theme}) => ({
   borderBottom: '1px solid',
   borderColor: theme.palette.background.default,
+  alignItems: 'center',
+  paddingTop: '4px',
+  paddingBottom: '4px',
 }));
 
 export {GridTitleMainLight, GridRow, GridTitleMain};

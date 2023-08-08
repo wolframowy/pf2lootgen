@@ -1,3 +1,4 @@
+import './result.scss';
 import React from 'react';
 import {itemArr} from '../commonPropTypes';
 import {Link, Paper, Grid, Typography} from '@mui/material';
@@ -16,10 +17,9 @@ function ItemResult(props) {
       <Grid
         container
         direction="row"
-        rowSpacing={1}
-        justifyContent="center"
-        alignItems="center"
-        align="center">
+        rowSpacing={0}
+        align="center"
+      >
         <GridTitleMain container
           item xs={12}>
           <Grid item xs={1}>
@@ -49,8 +49,15 @@ function ItemResult(props) {
                   <Grid item xs={1}>{item.count}x</Grid>
                   <Grid item xs={3} zeroMinWidth>
                     <Typography>
-                      <Link href={item.url} target='_blank'>
+                      <Link href={item.url} target='_blank'
+                        className='iframe-link'>
                         {item.name}
+                        <iframe
+                          id={`${item.id}iframe`}
+                          src={item.url}
+                          loading='lazy'
+                          className='iframe'
+                        />
                       </Link>
                     </Typography>
                   </Grid>

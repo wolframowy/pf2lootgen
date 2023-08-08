@@ -1,0 +1,23 @@
+
+.iframe {
+  position: absolute;
+  left: 0;
+  top: 15px;
+  width: 80vw;
+  height: 80vh;
+  opacity: 0;
+  transition: opacity 1.5s linear;
+  display: none;
+  background-image: url('/assets/bg.png');
+}
+
+.iframe-link {
+  position: relative;
+}
+
+.iframe-link:hover > .iframe, .iframe:hover{
+  display: block;
+  opacity: 1;
+  transition: opacity 1.5s linear;
+  z-index: 9;
+}

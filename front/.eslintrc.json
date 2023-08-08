@@ -21,7 +21,7 @@
         "no-unused-vars": "warn",
 		"linebreak-style": [
 			"error",
-			"windows"
+			"unix"
 		]
     }
 }

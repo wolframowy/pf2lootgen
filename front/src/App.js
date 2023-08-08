@@ -12,6 +12,8 @@ function App() {
       <Box my={1} sx={{display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        overflow: 'auto',
+        height: '100%',
       }}>
         <Box mb={1}>
           <Paper sx={{backgroundColor: 'primary.main', padding: '3px 5px'}}>

@@ -2,32 +2,13 @@ import './LootGen.scss';
 import FilterParty from './Filter/FilterParty';
 import FilterItem from './Filter/FilterItem';
 import React, {useState} from 'react';
-import {styled, Box, Button, ButtonGroup} from '@mui/material';
+import {Box, Button, ButtonGroup} from '@mui/material';
 import config from './../config/config.json';
 import {isEmpty} from '../util/utils';
 import ItemResult from './Result/ItemResult';
 import PartyResult from './Result/PartyResult';
 import FilterPrice from './Filter/FilterPrice';
-
-const BoxWithScrollbar = styled(Box)(({theme}) => ({
-  '&::-webkit-scrollbar': {
-    width: '10px',
-  },
-  /* Track */
-  '&::-webkit-scrollbar-track': {
-    background: theme.palette.secondary.main,
-    borderRadius: '2px',
-  },
-  /* Handle */
-  '&::-webkit-scrollbar-thumb': {
-    background: theme.palette.primary.light,
-    borderRadius: '2px',
-  },
-  /* Handle on hover */
-  '&::-webkit-scrollbar-thumb:hover': {
-    background: theme.palette.primary.main,
-  },
-}));
+import BoxWithScrollbar from '../Components/BoxWithScrollbar';
 
 const STATES = {
   PARTY: 'PARTY',
