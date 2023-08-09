@@ -92,6 +92,12 @@ function PartyResult(props) {
           </Grid>
         </>
       )}
+      <GridTitleMain container item xs={12}>
+        <Grid align='start'
+          item xs={12}
+          sx={{height: '1rem'}}
+        />
+      </GridTitleMain>
     </Paper>
   );
 };

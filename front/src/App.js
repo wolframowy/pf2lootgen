@@ -1,5 +1,6 @@
-import {Box, Typography, Paper, Container} from '@mui/material';
+import {Box, Typography} from '@mui/material';
 import './App.scss';
+import titleDrop from './assets/titleDrop.png';
 import React from 'react';
 import Footer from './Footer/Footer';
 import LootGen from './LootGen/LootGen';
@@ -16,12 +17,14 @@ function App() {
         height: '100%',
       }}>
         <Box mb={1}>
-          <Paper sx={{backgroundColor: 'primary.main', padding: '3px 5px'}}>
+          <Box sx={{background: `url(${titleDrop})`,
+            borderRadius: '5px',
+            padding: '3px 5px'}}>
             <Typography variant='h4' align='center'
-              color='primary.contrastText'>
+              sx={{color: 'primary.text'}}>
               <b>PF2 Loot Generator</b>
             </Typography>
-          </Paper>
+          </Box>
         </Box>
         <LootGen />
       </Box>

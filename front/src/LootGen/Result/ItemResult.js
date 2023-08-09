@@ -59,6 +59,12 @@ function ItemResult(props) {
                     {item.trait_raw.length > 0 &&
                     item.trait_raw.map((v) => `${v}, `)}</Grid>
                 </GridRow>))}
+        <GridTitleMain container item xs={12}>
+          <Grid align='start'
+            item xs={12}
+            sx={{height: '1rem'}}
+          />
+        </GridTitleMain>
       </Grid>
     </Paper>
   );
