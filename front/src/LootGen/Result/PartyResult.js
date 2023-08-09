@@ -1,12 +1,12 @@
-import './result.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {itemArr} from '../commonPropTypes';
-import {Paper, Link, Typography, Grid} from '@mui/material';
+import {Paper, Typography, Grid} from '@mui/material';
 import GridTitleMain, {
   GridTitleMainLight,
   GridRow} from './Components/CustomGrid';
 import TypographyTitleCell from './Components/TypographyTitleCell';
+import LinkWithIframe from './Components/LinkWithIframe/LinkWithIframe';
 
 
 const itemSection = (sectionName, items) => (
@@ -23,17 +23,8 @@ const itemSection = (sectionName, items) => (
                 key={item.id}>
                 <Grid item xs={1}>{item.count}x</Grid>
                 <Grid item xs={3} zeroMinWidth>
-                  <Typography>
-                    <Link href={item.url} target='_blank'
-                      className='iframe-link'>
-                      {item.name}
-                      <iframe
-                        id={`${item.id}iframe`}
-                        src={item.url}
-                        loading='lazy'
-                        className='iframe'
-                      />
-                    </Link>
+                  <Typography component={'span'}>
+                    <LinkWithIframe item={item} />
                   </Typography>
                 </Grid>
                 <Grid item xs={1}>{item.level}</Grid>

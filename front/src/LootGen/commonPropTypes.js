@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 const itemArr = PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number,
+      id: PropTypes.string,
       level: PropTypes.number,
       price: PropTypes.number,
       rarity: PropTypes.string,

@@ -1,9 +1,9 @@
-import './result.scss';
 import React from 'react';
 import {itemArr} from '../commonPropTypes';
-import {Link, Paper, Grid, Typography} from '@mui/material';
+import {Paper, Grid, Typography} from '@mui/material';
 import GridTitleMain, {GridRow} from './Components/CustomGrid';
 import TypographyTitleCell from './Components/TypographyTitleCell';
+import LinkWithIframe from './Components/LinkWithIframe/LinkWithIframe';
 
 /**
  * @param {*} props
@@ -49,16 +49,7 @@ function ItemResult(props) {
                   <Grid item xs={1}>{item.count}x</Grid>
                   <Grid item xs={3} zeroMinWidth>
                     <Typography>
-                      <Link href={item.url} target='_blank'
-                        className='iframe-link'>
-                        {item.name}
-                        <iframe
-                          id={`${item.id}iframe`}
-                          src={item.url}
-                          loading='lazy'
-                          className='iframe'
-                        />
-                      </Link>
+                      <LinkWithIframe item={item} />
                     </Typography>
                   </Grid>
                   <Grid item xs={1}>{item.level}</Grid>
