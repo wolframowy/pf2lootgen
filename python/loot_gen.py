@@ -74,7 +74,6 @@ class LootGen:
         cons_ct[str(min(20, pt_lvl + 1))] += extra
         r_perm = {}
         r_cons = {}
-        print(v)
         perm_pool = self.perm_common if rarity == Rarity.COMMON else (self.perm_common + self.perm_uncommon
                                                                       if rarity == Rarity.UNCOMMON else self.perm)
         cons_pool = self.cons_common if rarity == Rarity.COMMON else (self.cons_common + self.cons_uncommon

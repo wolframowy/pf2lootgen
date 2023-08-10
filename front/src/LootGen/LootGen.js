@@ -144,6 +144,17 @@ function LootGen() {
     }
   };
 
+  const isContentPresent = () => {
+    if (modeParty === STATES.PARTY) {
+      return party.consumable.length || party.perm.length || party.currency > 0;
+    } else if (modeParty === STATES.ITEM) {
+      return items.length > 0;
+    } else if (modeParty === STATES.PRICE) {
+      return priceItems.length > 0;
+    }
+    return false;
+  };
+
   const renderFilters = () => {
     if (modeParty === STATES.PARTY) {
       return <FilterParty {...partyProps} />;
@@ -217,9 +228,12 @@ function LootGen() {
         </Box>
         <Button variant="contained" onClick={handleSearch}>Search</Button>
       </Box>
-      <BoxWithScrollbar className='results' my={1} mx={4}>
-        {renderResults()}
-      </BoxWithScrollbar>
+      {
+        isContentPresent() &&
+        <BoxWithScrollbar className='results' my={1} mx={4}>
+          {renderResults()}
+        </BoxWithScrollbar>
+      }
     </Box>
   );
 }

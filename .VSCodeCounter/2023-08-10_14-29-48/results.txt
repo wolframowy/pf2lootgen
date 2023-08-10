@@ -1,0 +1,93 @@
+Date : 2023-08-10 14:29:48
+Directory : c:\Repos\pf2lootgen
+Total : 41 files,  33516 codes, 71 comments, 255 blanks, all 33842 lines
+
+Languages
++--------------------+------------+------------+------------+------------+------------+
+| language           | files      | code       | comment    | blank      | total      |
++--------------------+------------+------------+------------+------------+------------+
+| JSON               |          6 |     31,939 |          0 |          3 |     31,942 |
+| JavaScript         |         20 |        876 |         42 |         94 |      1,012 |
+| Python             |          4 |        384 |          6 |         65 |        455 |
+| SCSS               |          5 |        132 |          0 |         23 |        155 |
+| Markdown           |          2 |        116 |          0 |         67 |        183 |
+| JSON with Comments |          1 |         27 |          0 |          1 |         28 |
+| HTML               |          1 |         20 |         23 |          1 |         44 |
+| YAML               |          1 |         20 |          0 |          1 |         21 |
+| Properties         |          1 |          2 |          0 |          0 |          2 |
++--------------------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                     | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                        |         41 |     33,516 |         71 |        255 |     33,842 |
+| . (Files)                                                                                |          2 |         98 |          0 |         35 |        133 |
+| db                                                                                       |          2 |          2 |          0 |          0 |          2 |
+| front                                                                                    |         33 |     33,032 |         65 |        155 |     33,252 |
+| front (Files)                                                                            |          5 |     31,986 |          0 |         36 |     32,022 |
+| front\public                                                                             |          2 |         35 |         23 |          2 |         60 |
+| front\src                                                                                |         26 |      1,011 |         42 |        117 |      1,170 |
+| front\src (Files)                                                                        |          8 |        130 |          8 |         21 |        159 |
+| front\src\Components                                                                     |          2 |         27 |          3 |          8 |         38 |
+| front\src\Footer                                                                         |          2 |         33 |          4 |          5 |         42 |
+| front\src\LootGen                                                                        |         12 |        812 |         27 |         80 |        919 |
+| front\src\LootGen (Files)                                                                |          3 |        248 |          4 |         33 |        285 |
+| front\src\LootGen\Filter                                                                 |          3 |        254 |         15 |         15 |        284 |
+| front\src\LootGen\Result                                                                 |          6 |        310 |          8 |         32 |        350 |
+| front\src\LootGen\Result (Files)                                                         |          2 |        169 |          8 |         13 |        190 |
+| front\src\LootGen\Result\Components                                                      |          4 |        141 |          0 |         19 |        160 |
+| front\src\LootGen\Result\Components (Files)                                              |          2 |         24 |          0 |          8 |         32 |
+| front\src\LootGen\Result\Components\LinkWithIframe                                       |          2 |        117 |          0 |         11 |        128 |
+| front\src\config                                                                         |          1 |          3 |          0 |          0 |          3 |
+| front\src\util                                                                           |          1 |          6 |          0 |          3 |          9 |
+| python                                                                                   |          4 |        384 |          6 |         65 |        455 |
++------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| filename                                                                                 | language           | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| c:\Repos\pf2lootgen\README.md                                                            | Markdown           |         78 |          0 |         34 |        112 |
+| c:\Repos\pf2lootgen\db\items.json                                                        | JSON               |          1 |          0 |          0 |          1 |
+| c:\Repos\pf2lootgen\db\items_test.json                                                   | JSON               |          1 |          0 |          0 |          1 |
+| c:\Repos\pf2lootgen\docker-compose.yml                                                   | YAML               |         20 |          0 |          1 |         21 |
+| c:\Repos\pf2lootgen\front\.env                                                           | Properties         |          2 |          0 |          0 |          2 |
+| c:\Repos\pf2lootgen\front\.eslintrc.json                                                 | JSON with Comments |         27 |          0 |          1 |         28 |
+| c:\Repos\pf2lootgen\front\README.md                                                      | Markdown           |         38 |          0 |         33 |         71 |
+| c:\Repos\pf2lootgen\front\package-lock.json                                              | JSON               |     31,870 |          0 |          1 |     31,871 |
+| c:\Repos\pf2lootgen\front\package.json                                                   | JSON               |         49 |          0 |          1 |         50 |
+| c:\Repos\pf2lootgen\front\public\index.html                                              | HTML               |         20 |         23 |          1 |         44 |
+| c:\Repos\pf2lootgen\front\public\manifest.json                                           | JSON               |         15 |          0 |          1 |         16 |
+| c:\Repos\pf2lootgen\front\src\App.js                                                     | JavaScript         |         32 |          1 |          4 |         37 |
+| c:\Repos\pf2lootgen\front\src\App.scss                                                   | SCSS               |         11 |          0 |          2 |         13 |
+| c:\Repos\pf2lootgen\front\src\App.test.js                                                | JavaScript         |          8 |          0 |          2 |         10 |
+| c:\Repos\pf2lootgen\front\src\Components\BoxWithScrollbar.js                             | JavaScript         |         18 |          3 |          3 |         24 |
+| c:\Repos\pf2lootgen\front\src\Components\CustomTextField.js                              | JavaScript         |          9 |          0 |          5 |         14 |
+| c:\Repos\pf2lootgen\front\src\Footer\Footer.js                                           | JavaScript         |         30 |          4 |          3 |         37 |
+| c:\Repos\pf2lootgen\front\src\Footer\Footer.scss                                         | SCSS               |          3 |          0 |          2 |          5 |
+| c:\Repos\pf2lootgen\front\src\LootGen\Filter\FilterItem.js                               | JavaScript         |         84 |          5 |          5 |         94 |
+| c:\Repos\pf2lootgen\front\src\LootGen\Filter\FilterParty.js                              | JavaScript         |         70 |          5 |          5 |         80 |
+| c:\Repos\pf2lootgen\front\src\LootGen\Filter\FilterPrice.js                              | JavaScript         |        100 |          5 |          5 |        110 |
+| c:\Repos\pf2lootgen\front\src\LootGen\LootGen.js                                         | JavaScript         |        204 |          4 |         20 |        228 |
+| c:\Repos\pf2lootgen\front\src\LootGen\LootGen.scss                                       | SCSS               |         30 |          0 |         10 |         40 |
+| c:\Repos\pf2lootgen\front\src\LootGen\Result\Components\CustomGrid.js                    | JavaScript         |         18 |          0 |          5 |         23 |
+| c:\Repos\pf2lootgen\front\src\LootGen\Result\Components\LinkWithIframe\LinkWithIframe.js | JavaScript         |         41 |          0 |          5 |         46 |
+| c:\Repos\pf2lootgen\front\src\LootGen\Result\Components\LinkWithIframe\styles.scss       | SCSS               |         76 |          0 |          6 |         82 |
+| c:\Repos\pf2lootgen\front\src\LootGen\Result\Components\TypographyTitleCell.js           | JavaScript         |          6 |          0 |          3 |          9 |
+| c:\Repos\pf2lootgen\front\src\LootGen\Result\ItemResult.js                               | JavaScript         |         68 |          4 |          6 |         78 |
+| c:\Repos\pf2lootgen\front\src\LootGen\Result\PartyResult.js                              | JavaScript         |        101 |          4 |          7 |        112 |
+| c:\Repos\pf2lootgen\front\src\LootGen\commonPropTypes.js                                 | JavaScript         |         14 |          0 |          3 |         17 |
+| c:\Repos\pf2lootgen\front\src\config\config.json                                         | JSON               |          3 |          0 |          0 |          3 |
+| c:\Repos\pf2lootgen\front\src\index.js                                                   | JavaScript         |         18 |          3 |          3 |         24 |
+| c:\Repos\pf2lootgen\front\src\index.scss                                                 | SCSS               |         12 |          0 |          3 |         15 |
+| c:\Repos\pf2lootgen\front\src\reportWebVitals.js                                         | JavaScript         |         12 |          0 |          2 |         14 |
+| c:\Repos\pf2lootgen\front\src\setupTests.js                                              | JavaScript         |          1 |          4 |          1 |          6 |
+| c:\Repos\pf2lootgen\front\src\theme.js                                                   | JavaScript         |         36 |          0 |          4 |         40 |
+| c:\Repos\pf2lootgen\front\src\util\utils.js                                              | JavaScript         |          6 |          0 |          3 |          9 |
+| c:\Repos\pf2lootgen\python\__init__.py                                                   | Python             |          0 |          0 |          1 |          1 |
+| c:\Repos\pf2lootgen\python\bot.py                                                        | Python             |        144 |          1 |         29 |        174 |
+| c:\Repos\pf2lootgen\python\loot_gen.py                                                   | Python             |        187 |          0 |         19 |        206 |
+| c:\Repos\pf2lootgen\python\server.py                                                     | Python             |         53 |          5 |         16 |         74 |
+| Total                                                                                    |                    |     33,516 |         71 |        255 |     33,842 |
++------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+

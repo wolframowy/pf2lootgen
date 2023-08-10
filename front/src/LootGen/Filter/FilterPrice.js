@@ -53,9 +53,6 @@ function FilterPrice(props) {
         onFocus={(event) => {
           event.target.select();
         }}
-        sx={{
-          borderRadius: '5px 0 0 5px',
-        }}
         inputProps={{style: {textAlign: 'center'}}}/>
       <CustomTextField
         variant="filled"
