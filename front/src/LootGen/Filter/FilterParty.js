@@ -1,7 +1,7 @@
 import './../LootGen.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Select, MenuItem, InputLabel} from '@mui/material';
+import {Select, MenuItem, InputLabel, Paper, Divider} from '@mui/material';
 import {CustomTextField,
   CustomFormControl} from '../../Components/CustomTextField';
 
@@ -37,6 +37,7 @@ function FilterParty(props) {
           borderRadius: '5px 0 0 5px',
         }}
         inputProps={{style: {textAlign: 'center'}}}/>
+      <Divider orientation='vertical'/>
       <CustomTextField
         variant="filled"
         className='text_field'
@@ -49,6 +50,7 @@ function FilterParty(props) {
           event.target.select();
         }}
         inputProps={{style: {textAlign: 'center'}}}/>
+      <Divider orientation='vertical'/>
       <CustomFormControl
         variant="filled"
         sx={{

@@ -5,7 +5,7 @@ const themeOptions = {
     light: {
       palette: {
         primary: {
-          main: '#143642',
+          main: '#282c35',
         },
         secondary: {
           main: '#DAD2D8',
@@ -20,13 +20,13 @@ const themeOptions = {
           main: '#00a3d6',
         },
         background: {
-          default: '#449394',
+          default: '#888989',
           paper: '#DAD2D8',
         },
         custom: {
           light: '#111111',
           default: '#000000',
-          dark: '#666666',
+          dark: '#1c1817',
           contrastText: '#AAAAAA',
         },
       },

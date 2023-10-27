@@ -9,4 +9,8 @@
   background-repeat: repeat;
   background-position: center center;
   overflow: auto;
+
+  .transition-box {
+    transition: all 1s;
+  }
 }

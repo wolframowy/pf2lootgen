@@ -1,16 +1,27 @@
 import './Footer.scss';
-import React from 'react';
-import {Box, Link, Paper, Typography} from '@mui/material';
+import React, {useState} from 'react';
+import {Box, Button, IconButton, Link, Paper, Typography} from '@mui/material';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 /**
  * Footer container
  * @return {object} Footer container
  */
 function Footer() {
+  const [isHidden, setIsHidden] = useState(false);
   return (
-    <Box mx={1} mb={1} className='Footer'>
-      <Paper sx={{position: 'relative'}}>
-        <Box p={1}>
+    <Box sx={{position: 'relative'}}>
+      <IconButton color='secondary' size='small'
+        sx={{position: 'absolute', top: '-40px', p: 0}}
+        onClick={() => setIsHidden(!isHidden)}>
+        {isHidden ?
+          <KeyboardArrowUpIcon sx={{fontSize: 40}}/> :
+          <KeyboardArrowDownIcon sx={{fontSize: 40}}/>}
+      </IconButton>
+      <Paper className={`Footer ${isHidden && 'hidden'}`}
+        square sx={{position: 'relative'}}>
+        {!isHidden && <Box p={1}>
           <Typography fontSize={11} paragraph
             m={0} variant='caption' align='justify'>
             {`This tool uses trademarks and/or copyrights owned by Paizo Inc.,
@@ -21,14 +32,16 @@ function Footer() {
             or specifically approved by Paizo. For more information about
             Paizo Inc. and Paizo products, visit paizo.com.`}
           </Typography>
-        </Box>
-        <div style={{textAlign: 'right',
-          position: 'absolute', bottom: '2px', right: '2px'}}>
-          <Typography fontSize={10}>
-            v{process.env.REACT_APP_VERSION}
-          </Typography>
-        </div>
+        </Box>}
       </Paper>
+      <div style={{textAlign: 'right',
+        position: 'absolute', bottom: '2px', right: '2px'}}>
+        <Paper square sx={{p: '1px'}} elevation={0}>
+          <Typography fontSize={10}>
+              v{process.env.REACT_APP_VERSION}
+          </Typography>
+        </Paper>
+      </div>
     </Box>
   );
 }

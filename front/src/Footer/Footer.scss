@@ -1,4 +1,10 @@
 
 .Footer {
-  flex-basis: 2rem;
+  height: 3rem;
+  transition: all .3s linear !important;
+  overflow: hidden;
+
+  &.hidden {
+    height: 0;
+  }
 }

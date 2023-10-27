@@ -1,21 +1,23 @@
 import './styles.scss';
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {Link} from '@mui/material';
 
 const LinkWithIframe = (props) => {
   const {item} = props;
+  const [shouldLoad, setShouldLoad] = useState(false);
 
   return (
     <Link
       href={item.url} target='_blank'
-      className='iframe-link'>
+      className='iframe-link'
+      onMouseEnter={() => setShouldLoad(true)}>
       {item.name}
       <div className='iframe-container'>
         <iframe
           id={`${item.id}iframe`}
           src=
-            {`${item.url}#ctl00_RadDrawer1_Content_MainContent_Header`}
+            {`${shouldLoad ? item.url : 'about:blank'}`}
           loading='lazy'
           className='iframe'
         />

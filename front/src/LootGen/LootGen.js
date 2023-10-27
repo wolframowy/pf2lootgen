@@ -2,13 +2,14 @@ import './LootGen.scss';
 import FilterParty from './Filter/FilterParty';
 import FilterItem from './Filter/FilterItem';
 import React, {useState} from 'react';
-import {Box, Button, ButtonGroup} from '@mui/material';
+import {Box, Button, ButtonGroup, Paper, CircularProgress} from '@mui/material';
 import config from './../config/config.json';
 import {isEmpty} from '../util/utils';
 import ItemResult from './Result/ItemResult';
 import PartyResult from './Result/PartyResult';
 import FilterPrice from './Filter/FilterPrice';
 import BoxWithScrollbar from '../Components/BoxWithScrollbar';
+import PropTypes from 'prop-types';
 
 const STATES = {
   PARTY: 'PARTY',
@@ -18,9 +19,11 @@ const STATES = {
 
 /**
  * LootGen container
+ * @param {*} props
  * @return {object} LootGen container
  */
-function LootGen() {
+function LootGen(props) {
+  const {isSearched, isSearchedToggle} = props;
   const SERVER_URL = process.env.REACT_APP_SERVER_URL ?
   process.env.REACT_APP_SERVER_URL :
   config.SERVER_URL;
@@ -71,7 +74,11 @@ function LootGen() {
             },
             (error) => {
               setLoading(false);
-              setParty({});
+              setParty({
+                consumable: [],
+                perm: [],
+                currency: 0,
+              });
               alert(error);
             });
   };
@@ -129,6 +136,9 @@ function LootGen() {
   const handleModeClick = (mode) => setModeParty(mode);
 
   const handleSearch = () => {
+    if (!isSearched) {
+      isSearchedToggle(true);
+    }
     switch (modeParty) {
       case STATES.PARTY:
         getPartyLoot();
@@ -202,40 +212,59 @@ function LootGen() {
 
   return (
     <Box className='LootGen'>
-      <Box className='filter'>
-        <ButtonGroup variant="contained" color="primary"
-          aria-label="text primary button group">
-          <Button color={modeParty === STATES.PARTY ? 'primary' : 'secondary'}
-            onClick={() => {
-              handleModeClick(STATES.PARTY);
-            }}>
-              Party
-          </Button>
-          <Button color={modeParty === STATES.ITEM ? 'primary' : 'secondary'}
-            onClick={() => {
-              handleModeClick(STATES.ITEM);
-            }}>Item
-          </Button>
-          <Button color={modeParty === STATES.PRICE ? 'primary' : 'secondary'}
-            onClick={() => {
-              handleModeClick(STATES.PRICE);
-            }}>
-              Price
-          </Button>
-        </ButtonGroup>
+      <Box className={`filter ${!isContentPresent() && 'centered'}`}>
+        <Paper sx={{p: '1px'}}>
+          <ButtonGroup variant="contained" color="primary"
+            aria-label="text primary button group">
+            <Button color={modeParty === STATES.PARTY ? 'primary' : 'secondary'}
+              onClick={() => {
+                handleModeClick(STATES.PARTY);
+              }}>
+                Party
+            </Button>
+            <Button color={modeParty === STATES.ITEM ? 'primary' : 'secondary'}
+              onClick={() => {
+                handleModeClick(STATES.ITEM);
+              }}>Item
+            </Button>
+            <Button color={modeParty === STATES.PRICE ? 'primary' : 'secondary'}
+              onClick={() => {
+                handleModeClick(STATES.PRICE);
+              }}>
+                Price
+            </Button>
+          </ButtonGroup>
+        </Paper>
         <Box my={1}>
-          {renderFilters()}
+          <Paper
+            sx={{p: '1px', backgroundColor: 'primary.main', display: 'flex'}}>
+            {renderFilters()}
+          </Paper>
         </Box>
-        <Button variant="contained" onClick={handleSearch}>Search</Button>
+        <Paper sx={{p: '1px'}}>
+          <Button variant="contained" onClick={handleSearch}>Search</Button>
+        </Paper>
       </Box>
       {
+        loading ?
+          <Box className='results' display='flex' flexDirection='column'
+            justifyContent='space-around' alignItems='center'>
+            <CircularProgress color="secondary" size='5em'/>
+          </Box> :
         isContentPresent() &&
-        <BoxWithScrollbar className='results' my={1} mx={4}>
+        <BoxWithScrollbar
+          className={`results ${!isContentPresent() && 'hidden'}`}
+          my={1} mx={4}>
           {renderResults()}
         </BoxWithScrollbar>
       }
     </Box>
   );
 }
+
+LootGen.propTypes = {
+  isSearched: PropTypes.bool,
+  isSearchedToggle: PropTypes.func,
+};
 
 export default LootGen;
