@@ -5,6 +5,7 @@ import {Select, MenuItem,
   InputLabel, Divider} from '@mui/material';
 import {CustomTextField,
   CustomFormControl} from '../../Components/CustomTextField';
+import {MIN_PRICE, MIN_COUNT} from '../../util/constants';
 
 /**
  * FilterPrice component containing filters for item search
@@ -33,11 +34,12 @@ function FilterPrice(props) {
         id='price'
         required label='Price'
         type='number'
-        value={price}
+        value={price || ''}
         onChange={handlePriceChange}
         onFocus={(event) => {
           event.target.select();
         }}
+        onBlur={() => handlePriceChange({target: {value: price || MIN_PRICE}})}
         sx={{
           borderRadius: '5px 0 0 5px',
         }}
@@ -54,6 +56,8 @@ function FilterPrice(props) {
         onFocus={(event) => {
           event.target.select();
         }}
+        onBlur={() =>
+          handleOffsetChange({target: {value: offset || MIN_PRICE}})}
         inputProps={{style: {textAlign: 'center'}}}/>
       <Divider orientation='vertical'/>
       <CustomTextField
@@ -67,6 +71,7 @@ function FilterPrice(props) {
         onFocus={(event) => {
           event.target.select();
         }}
+        onBlur={() => handleCountChange({target: {value: count || MIN_COUNT}})}
         inputProps={{style: {textAlign: 'center'}}}/>
       <Divider orientation='vertical'/>
       <CustomFormControl variant="filled">
@@ -74,9 +79,9 @@ function FilterPrice(props) {
         <Select color="secondary" className='select' id="rarity"
           labelId='rarity_label' label="Rarity"
           value={rarity} onChange={handleRarityChange}>
-          <MenuItem value='c'>Common</MenuItem>
-          <MenuItem value='u'>Uncommon</MenuItem>
           <MenuItem value='r'>Rare</MenuItem>
+          <MenuItem value='u'>Uncommon</MenuItem>
+          <MenuItem value='c'>Common</MenuItem>
         </Select>
       </CustomFormControl>
       <Divider orientation='vertical'/>

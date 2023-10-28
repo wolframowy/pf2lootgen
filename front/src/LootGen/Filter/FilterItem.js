@@ -5,6 +5,7 @@ import {Select, MenuItem,
   InputLabel, Divider} from '@mui/material';
 import {CustomTextField,
   CustomFormControl} from '../../Components/CustomTextField';
+import {MIN_COUNT, MIN_LEVEL} from '../../util/constants';
 
 /**
  * FilterItem component containing filters for item search
@@ -31,11 +32,12 @@ function FilterItem(props) {
         id='item_lvl'
         required label='Items level'
         type='number'
-        value={lvl}
+        value={lvl || ''}
         onChange={handleLvlChange}
         onFocus={(event) => {
           event.target.select();
         }}
+        onBlur={() => handleLvlChange({target: {value: lvl || MIN_LEVEL}})}
         sx={{
           borderRadius: '5px 0 0 5px',
         }}
@@ -47,11 +49,12 @@ function FilterItem(props) {
         id='item_count'
         required label='Item no.'
         type='number'
-        value={count}
+        value={count || ''}
         onChange={handleCountChange}
         onFocus={(event) => {
           event.target.select();
         }}
+        onBlur={() => handleCountChange({target: {value: count || MIN_COUNT}})}
         inputProps={{style: {textAlign: 'center'}}}/>
       <Divider orientation='vertical'/>
       <CustomFormControl variant="filled">
@@ -59,9 +62,9 @@ function FilterItem(props) {
         <Select color="secondary" className='select' id="rarity"
           labelId='rarity_label' label="Rarity"
           value={rarity} onChange={handleRarityChange}>
-          <MenuItem value='c'>Common</MenuItem>
-          <MenuItem value='u'>Uncommon</MenuItem>
           <MenuItem value='r'>Rare</MenuItem>
+          <MenuItem value='u'>Uncommon</MenuItem>
+          <MenuItem value='c'>Common</MenuItem>
         </Select>
       </CustomFormControl>
       <Divider orientation='vertical'/>

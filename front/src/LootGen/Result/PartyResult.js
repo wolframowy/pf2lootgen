@@ -55,7 +55,11 @@ function PartyResult(props) {
         rowSpacing={0}
         align='center'>
         <GridTitleMain container
-          item xs={12}>
+          item xs={12}
+          sx={{
+            'top': 0,
+            'z-index': 1,
+          }}>
           <Grid item xs={1}>
             <TypographyTitleCell>Count</TypographyTitleCell>
           </Grid>
@@ -66,7 +70,7 @@ function PartyResult(props) {
             <TypographyTitleCell>Level</TypographyTitleCell>
           </Grid>
           <Grid item xs={1}>
-            <TypographyTitleCell>Price</TypographyTitleCell>
+            <TypographyTitleCell>Price (Gp)</TypographyTitleCell>
           </Grid>
           <Grid item xs={2}>
             <TypographyTitleCell>Rarity</TypographyTitleCell>
@@ -82,7 +86,9 @@ function PartyResult(props) {
         <>
           <GridTitleMainLight align='start'
             item xs={12}>
-            <TypographyTitleCell ml={2}>Total Currency:</TypographyTitleCell>
+            <TypographyTitleCell ml={2}>
+              Additional Currency (gold and valuables):
+            </TypographyTitleCell>
           </GridTitleMainLight>
           <Grid align='start'
             item xs={12}>

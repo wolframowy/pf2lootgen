@@ -1,16 +1,18 @@
 
 .iframe-container {
   position: fixed;
-  left: 15vw;
+  left: 25vw;
   top: 15vh;
   width: 70vw;
   height: 70vh;
-  opacity: 0;
-  transition: opacity 1.5s linear;
-  display: none;
+  transition: all .3s linear .3s;
+  display: flex;
   justify-content: center;
   align-items: center;
   background: var(--mui-palette-custom-default);
+  visibility: hidden;
+  opacity: 0;
+  z-index: 9;
 }
 
 .iframe-link {
@@ -18,10 +20,8 @@
 }
 
 .iframe-link:hover > .iframe-container, .iframe-container:hover{
-  display: flex;
+  visibility: visible;
   opacity: 1;
-  transition: opacity 1.5s linear;
-  z-index: 9;
 }
 
 .iframe {

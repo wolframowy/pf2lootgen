@@ -10,6 +10,8 @@ import PartyResult from './Result/PartyResult';
 import FilterPrice from './Filter/FilterPrice';
 import BoxWithScrollbar from '../Components/BoxWithScrollbar';
 import PropTypes from 'prop-types';
+import {MAX_COUNT, MAX_LEVEL, MAX_PT_SIZE,
+  MIN_COUNT, MIN_LEVEL, MIN_PRICE, MIN_PT_SIZE} from '../util/constants';
 
 const STATES = {
   PARTY: 'PARTY',
@@ -48,24 +50,28 @@ function LootGen(props) {
   const [offset, setOffset] = useState(10);
 
   const normalizeLevel = (lvl) => {
-    return lvl > 20 ? 20 : (lvl < 1 ? 1 : parseInt(lvl));
+    return lvl > MAX_LEVEL ? MAX_LEVEL :
+      (lvl < MIN_LEVEL ? null : parseInt(lvl));
   };
 
   const normalizeSize = (size) => {
-    return size > 10 ? 10 : (size < 1 ? 1 : parseInt(size));
+    return size > MAX_PT_SIZE ? MAX_PT_SIZE :
+      (size < MIN_PT_SIZE ? null : parseInt(size));
   };
 
   const normalizeCount = (count) => {
-    return count > 50 ? 50 : (count < 1 ? 1 : parseInt(count));
+    return count > MAX_COUNT ? MAX_COUNT :
+      (count < MIN_COUNT ? null : parseInt(count));
   };
 
   const normalizeMoney = (money) => {
-    return money <= 0 ? 1 : parseInt(money);
+    return money <= MIN_PRICE ? null : parseInt(money);
   };
 
   const getPartyLoot = () => {
     setLoading(true);
-    fetch(SERVER_URL + '/party/' + plvl + '/' + size + '?r=' + rarity)
+    fetch(SERVER_URL + '/party/' + (plvl || MIN_LEVEL) +
+      '/' + (size || MIN_PT_SIZE) + '?r=' + rarity)
         .then((res) => res.json())
         .then(
             (res) => {
@@ -85,7 +91,8 @@ function LootGen(props) {
 
   const getItemLoot = () => {
     setLoading(true);
-    fetch(SERVER_URL + '/item/' + ilvl + '/' + count +
+    fetch(SERVER_URL + '/item/' + (ilvl || MIN_LEVEL) +
+      '/' + (count || MIN_COUNT) +
       '?r=' + rarity + '&t=' + type )
         .then((res) => res.json())
         .then(
@@ -105,8 +112,8 @@ function LootGen(props) {
 
   const getPriceLoot = () => {
     setLoading(true);
-    fetch(SERVER_URL + '/price?price=' + price +
-      '&offset=' + offset + '&no=' + count +
+    fetch(SERVER_URL + '/price?price=' + (price || MIN_PRICE) +
+      '&offset=' + (offset || MIN_PRICE) + '&no=' + (count || MIN_COUNT) +
       '&r=' + rarity + '&t=' + type )
         .then((res) => res.json())
         .then(

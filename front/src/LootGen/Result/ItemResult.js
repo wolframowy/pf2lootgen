@@ -32,7 +32,7 @@ function ItemResult(props) {
             <TypographyTitleCell>Level</TypographyTitleCell>
           </Grid>
           <Grid item xs={1}>
-            <TypographyTitleCell>Price</TypographyTitleCell>
+            <TypographyTitleCell>Price (Gp)</TypographyTitleCell>
           </Grid>
           <Grid item xs={2}>
             <TypographyTitleCell>Rarity</TypographyTitleCell>

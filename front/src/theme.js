@@ -17,7 +17,7 @@ const themeOptions = {
           main: '#EC9A29',
         },
         info: {
-          main: '#00a3d6',
+          main: '#066380',
         },
         background: {
           default: '#888989',
