@@ -3,7 +3,7 @@
 
 ## Application
 
-Application is currently available at URL http://pokierejszowany.ddns.net:3000/ .
+Application is currently available at URL http://pokierejszowany.ddns.net .
 
 ## About
 
