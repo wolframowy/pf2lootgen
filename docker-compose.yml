@@ -10,6 +10,7 @@ services:
         - REACT_APP_SERVER_URL=http://pokierejszowany.ddns.net:5000/api
     ports:
       - "3000:3000"
+    restart: always
   back:
     image: wolframowy/pf2lootgen_backend
     platform: linux/arm/v7
@@ -18,3 +19,4 @@ services:
       dockerfile: docker/back/dockerfile
     ports:
       - "5000:5000"
+    restart: always
