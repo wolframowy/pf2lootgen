@@ -1,3 +1,4 @@
+#!/bin/sh
 curl -d '{
 	"size":10000,
 	"_source": [
@@ -7,7 +8,9 @@ curl -d '{
 		"rarity",
 		"price",
 		"trait_raw",
-		"url"
+		"url",
+		"legacy_id",
+		"remaster_id"
 	],
 	"query": {
 		"bool": {

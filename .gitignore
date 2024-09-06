@@ -2,6 +2,7 @@
 .vscode
 token.json
 __pycache__
+.bck
 
 # Python virtual environment
 venv*
