@@ -3,7 +3,10 @@
 
 ## Application
 
-Application is currently available at URL http://pokierejszowany.ddns.net .
+Application is currently available at
+[http://pokierejszowany.mooo.com](http://pokierejszowany.mooo.com/) 
+and
+[http://pokierejszowany.farted.net/](http://pokierejszowany.farted.net/).
 
 ## About
 
