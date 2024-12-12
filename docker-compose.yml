@@ -1,4 +1,3 @@
-version: "3.9"
 services:
   front:
     image: wolframowy/pf2lootgen_frontend
