@@ -2,6 +2,7 @@
 .vscode
 token.json
 __pycache__
+certs/*
 
 # Python virtual environment
 venv*
